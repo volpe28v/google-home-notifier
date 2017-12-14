@@ -43,3 +43,10 @@ module.exports.getLatestUrl = function(){
   return mp3Urls[0];
 }
 
+module.exports.getRandomUrl = function(){
+  if (mp3Urls.length == 0){
+    return null;
+  }
+
+  return mp3Urls[Math.floor( Math.random() * mp3Urls.length )];
+}
