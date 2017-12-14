@@ -79,7 +79,13 @@ var getPlayUrl = function(url, host, callback) {
     });
 };
 
+var currentTimes = {};
+var statusTimer = null;
+
 var onDeviceUp = function(host, url, callback) {
+  console.log(currentTimes);
+  if (statusTimer) clearInterval(statusTimer);
+
   var client = new Client();
   client.connect(host, function() {
     client.launch(DefaultMediaReceiver, function(err, player) {
@@ -89,10 +95,22 @@ var onDeviceUp = function(host, url, callback) {
         contentType: 'audio/mp3',
         streamType: 'BUFFERED' // or LIVE
       };
+
       player.load(media, { autoplay: true }, function(err, status) {
-        client.close();
+        //client.close();
+        var beforeTime = currentTimes[media.contentId];
+        if (beforeTime){
+          player.seek(beforeTime, function(err, status) {
+            startTimer(player);
+          });
+          callback('seek to ' + beforeTime);
+          return;
+        }
+
+        startTimer(player);
         callback('Device notified');
       });
+
     });
   });
 
@@ -103,6 +121,16 @@ var onDeviceUp = function(host, url, callback) {
   });
 };
 
+function startTimer(player){
+  statusTimer = setInterval(function(){
+    player.getStatus(function(err, status){
+      console.log(status.currentTime);
+      console.log(status.media.contentId);
+      currentTimes[status.media.contentId] = status.currentTime;
+    });
+  }, 10*1000);
+}
+ 
 exports.ip = ip;
 exports.device = device;
 exports.accent = accent;
