@@ -7,6 +7,7 @@ const serverPort = 8091; // default port
 
 var deviceName = 'Google Home';
 var ip = '192.168.0.4'; // default IP
+var language = 'ja'; // default language code
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
@@ -29,7 +30,6 @@ app.post('/google-home-notifier', urlencodedParser, function (req, res) {
      ip = req.query.ip;
   }
 
-  var language = 'ja'; // default language code
   if (req.query.language) {
     language;
   }
@@ -46,16 +46,14 @@ app.get('/google-home-notifier', function (req, res) {
      ip = req.query.ip;
   }
 
-  var language = 'ja'; // default language code
   if (req.query.language) {
     language;
   }
 
-  notifyToGoogleHome(text, ip, ranguage, res);
+  notifyToGoogleHome(text, ip, language, res);
 });
 
-app.get('/google-home-backspace', function (req, res) {
-  var language = 'ja'; // default language code
+app.get('/google-home-backspace-latest', function (req, res) {
   var text = backspace.getLatestUrl();
   console.log(text);
 
@@ -63,7 +61,6 @@ app.get('/google-home-backspace', function (req, res) {
 });
 
 app.get('/google-home-backspace-random', function (req, res) {
-  var language = 'ja'; // default language code
   var text = backspace.getRandomUrl();
   console.log(text);
 
@@ -71,8 +68,7 @@ app.get('/google-home-backspace-random', function (req, res) {
 });
 
 
-app.get('/google-home-rebuild', function (req, res) {
-  var language = 'ja'; // default language code
+app.get('/google-home-rebuild-latest', function (req, res) {
   var text = rebuild.getLatestUrl();
   console.log(text);
 
@@ -80,7 +76,6 @@ app.get('/google-home-rebuild', function (req, res) {
 });
 
 app.get('/google-home-rebuild-random', function (req, res) {
-  var language = 'ja'; // default language code
   var text = rebuild.getRandomUrl();
   console.log(text);
 
@@ -90,7 +85,7 @@ app.get('/google-home-rebuild-random', function (req, res) {
 
 function notifyToGoogleHome(text, ip, language, res){
   googlehome.ip(ip, language);
-  googlehome.device(deviceName,language)　　　　　　　//ここに命令文を追加
+  googlehome.device(deviceName,language)
 
   if (text) {
     try {
@@ -123,9 +118,9 @@ app.listen(serverPort, function () {
     console.log('    ' + url + '/google-home-notifier');
     console.log('GET example:');
     console.log('curl -X GET ' + url + '/google-home-notifier?text=Hello+Google+Home');
-    console.log('curl -X GET ' + url + '/google-home-backspace');
+    console.log('curl -X GET ' + url + '/google-home-backspace-latest');
     console.log('curl -X GET ' + url + '/google-home-backspace-random');
-    console.log('curl -X GET ' + url + '/google-home-rebuild');
+    console.log('curl -X GET ' + url + '/google-home-rebuild-latest');
     console.log('curl -X GET ' + url + '/google-home-rebuild-random');
 	console.log('POST example:');
 	console.log('curl -X POST -d "text=Hello Google Home" ' + url + '/google-home-notifier');

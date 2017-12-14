@@ -93,11 +93,11 @@ var onDeviceUp = function(host, url, callback) {
       var media = {
         contentId: url,
         contentType: 'audio/mp3',
-        streamType: 'BUFFERED' // or LIVE
+        //streamType: 'BUFFERED' // or LIVE
+        streamType: 'LIVE' // or LIVE
       };
 
       player.load(media, { autoplay: true }, function(err, status) {
-        //client.close();
         var beforeTime = currentTimes[media.contentId];
         if (beforeTime){
           player.seek(beforeTime, function(err, status) {
@@ -110,7 +110,6 @@ var onDeviceUp = function(host, url, callback) {
         startTimer(player);
         callback('Device notified');
       });
-
     });
   });
 
@@ -124,8 +123,13 @@ var onDeviceUp = function(host, url, callback) {
 function startTimer(player){
   statusTimer = setInterval(function(){
     player.getStatus(function(err, status){
-      console.log(status.currentTime);
-      console.log(status.media.contentId);
+      if (status == null){
+        clearInterval(statusTimer);
+        statusTimer = null;
+        return;
+      }
+
+      console.log(status.media.contentId + " : " + status.currentTime);
       currentTimes[status.media.contentId] = status.currentTime;
     });
   }, 10*1000);
