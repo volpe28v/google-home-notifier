@@ -1,6 +1,7 @@
 var Client = require('castv2-client').Client;
 var DefaultMediaReceiver = require('castv2-client').DefaultMediaReceiver;
 var mdns = require('mdns');
+var storage = require('./jsonfile-storage');
 var browser = mdns.createBrowser(mdns.tcp('googlecast'));
 var deviceAddress;
 var language;
@@ -98,7 +99,7 @@ var onDeviceUp = function(host, url, callback) {
       };
 
       player.load(media, { autoplay: true }, function(err, status) {
-        var beforeTime = currentTimes[media.contentId];
+        var beforeTime = storage.getBeforeTime(media.contentId);
         if (beforeTime){
           player.seek(beforeTime, function(err, status) {
             startTimer(player);
@@ -130,7 +131,7 @@ function startTimer(player){
       }
 
       console.log(status.media.contentId + " : " + status.currentTime);
-      currentTimes[status.media.contentId] = status.currentTime;
+      storage.setBeforeTime(status.media.contentId, status.currentTime);
     });
   }, 10*1000);
 }
