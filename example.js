@@ -2,14 +2,26 @@ var express = require('express');
 var googlehome = require('./google-home-notifier');
 var ngrok = require('ngrok');
 var bodyParser = require('body-parser');
+
+var GoogleSpreadsheet = require('google-spreadsheet');
+var ngrokUrlSheet = new GoogleSpreadsheet(process.env.SPREAD_KEY); //コピーしたスプレッドシートのKey
+var credentials = require('./GoogleHome.json'); //作成した認証キーへのパス
+
 var app = express();
 const serverPort = 8091; // default port
 
 var deviceName = 'Google Home';
-var ip = '192.168.0.4'; // default IP
+var ip = process.env.GOOGLEHOME_IP; // default IP
 var language = 'ja'; // default language code
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+var sheet;
+ngrokUrlSheet.useServiceAccountAuth(credentials, function(err){
+   ngrokUrlSheet.getInfo(function(err, data){
+      sheet = data.worksheets[0];
+   });
+});
 
 var backspace = require('./backspace-rss');
 var rebuild = require('./rebuild-rss');
@@ -21,8 +33,8 @@ rebuild.getRss();
 rebuild.startCron();
 
 app.post('/google-home-notifier', urlencodedParser, function (req, res) {
-  if (!req.body) return res.sendStatus(400)
   console.log(req.body);
+  if (!req.body) return res.sendStatus(400)
   
   var text = req.body.text;
   
@@ -122,7 +134,20 @@ app.listen(serverPort, function () {
     console.log('curl -X GET ' + url + '/google-home-backspace-random');
     console.log('curl -X GET ' + url + '/google-home-rebuild-latest');
     console.log('curl -X GET ' + url + '/google-home-rebuild-random');
-	console.log('POST example:');
-	console.log('curl -X POST -d "text=Hello Google Home" ' + url + '/google-home-notifier');
+    console.log('POST example:');
+    console.log('curl -X POST -d "text=Hello Google Home" ' + url + '/google-home-notifier');
+
+    sheet.getCells({
+      'min-row': 1,
+      'max-row': 1,
+      'min-col': 1,
+      'max-col': 1,
+      'return-empty': true
+    }, function(error, cells) {
+      var cell = cells[0];
+      cell.value = url;
+      cell.save();
+      console.log('spread sheet update successful!!');
+    });
   });
 })

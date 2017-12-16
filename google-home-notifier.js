@@ -100,7 +100,7 @@ var onDeviceUp = function(host, url, callback) {
 
       player.load(media, { autoplay: true }, function(err, status) {
         var beforeTime = storage.getBeforeTime(media.contentId);
-        if (beforeTime){
+        if (beforeTime > 0){
           player.seek(beforeTime, function(err, status) {
             startTimer(player);
           });

@@ -1,3 +1,13 @@
+# google-home-podcast
+Play rebuild.fm and backspace.fm on Google Home.
+
+```
+$ npm install
+$ SPREAD_KEY=<SpreadSheetKey> GOOGLEHOME_IP=<GoogleHomeIP> node example.js
+```
+
+
+---
 # google-home-notifier
 Send notifications to Google Home
 
