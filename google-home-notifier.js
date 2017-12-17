@@ -80,17 +80,14 @@ var getPlayUrl = function(url, host, callback) {
     });
 };
 
-var currentTimes = {};
 var statusTimer = null;
 
 var onDeviceUp = function(host, url, callback) {
-  console.log(currentTimes);
   if (statusTimer) clearInterval(statusTimer);
 
   var client = new Client();
   client.connect(host, function() {
     client.launch(DefaultMediaReceiver, function(err, player) {
-
       var media = {
         contentId: url,
         contentType: 'audio/mp3',
@@ -98,17 +95,27 @@ var onDeviceUp = function(host, url, callback) {
         streamType: 'LIVE' // or LIVE
       };
 
+      player.on('status', function(status) {
+        switch(status.playerState){
+          case 'PLAYING':
+            startProgressTimer(player);
+            break;
+
+          case 'PAUSED':
+            stopProgressTimer();
+            break;
+        }
+      });
+
       player.load(media, { autoplay: true }, function(err, status) {
         var beforeTime = storage.getBeforeTime(media.contentId);
         if (beforeTime > 0){
           player.seek(beforeTime, function(err, status) {
-            startTimer(player);
+            callback('seek to ' + beforeTime);
           });
-          callback('seek to ' + beforeTime);
           return;
         }
 
-        startTimer(player);
         callback('Device notified');
       });
     });
@@ -121,7 +128,7 @@ var onDeviceUp = function(host, url, callback) {
   });
 };
 
-function startTimer(player){
+function startProgressTimer(player){
   statusTimer = setInterval(function(){
     player.getStatus(function(err, status){
       if (status == null){
@@ -136,6 +143,13 @@ function startTimer(player){
   }, 10*1000);
 }
  
+function stopProgressTimer(){
+  if (statusTimer){
+    clearInterval(statusTimer);
+    statusTimer = null;
+  }
+}
+
 exports.ip = ip;
 exports.device = device;
 exports.accent = accent;
