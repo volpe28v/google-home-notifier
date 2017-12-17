@@ -18,20 +18,24 @@ function RssReader(url){
   }
 
   this.getRss = function(){
-    request.get({
-      url: self.url
-    }, function(error, reaponse, body){
-      var lines = body.split("\n");
+    return new Promise(function(resolve, reject){
+      request.get({
+        url: self.url
+      }, function(error, reaponse, body){
+        var lines = body.split("\n");
 
-      self.mp3Urls = lines.filter(function(line){
-        return line.match(/enclosure/);
-      })
+        self.mp3Urls = lines.filter(function(line){
+          return line.match(/enclosure/);
+        })
         .map(function(line){
           return line.split('"')[1];
         });
 
-      console.log(self.mp3Urls.length);
-      console.log(self.getLatestUrl());
+        console.log(self.url + " " + self.mp3Urls.length + " episodes.");
+        console.log("\tlatest " + self.getLatestUrl());
+        
+        resolve();
+      });
     });
   }
 

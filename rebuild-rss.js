@@ -14,7 +14,11 @@ module.exports.getRss = function(){
 }
 
 module.exports.getLatestUrl = function(){
-  return rssReader.getLatestUrl();
+  return new Promise(function(resolve, reject){
+    rssReader.getRss().then(function(){
+      resolve(rssReader.getLatestUrl());
+    })
+  });
 }
 
 module.exports.getRandomUrl = function(){

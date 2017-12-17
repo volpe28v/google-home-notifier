@@ -66,32 +66,32 @@ app.get('/google-home-notifier', function (req, res) {
 });
 
 app.get('/google-home-backspace-latest', function (req, res) {
-  var text = backspace.getLatestUrl();
-  console.log(text);
-
-  notifyToGoogleHome(text, ip, language, res);
+  backspace.getLatestUrl().then(function(url){
+    console.log(url);
+    notifyToGoogleHome(url, ip, language, res);
+  });
 });
 
 app.get('/google-home-backspace-random', function (req, res) {
-  var text = backspace.getRandomUrl();
-  console.log(text);
+  var url = backspace.getRandomUrl();
+  console.log(url);
 
-  notifyToGoogleHome(text, ip, language, res);
+  notifyToGoogleHome(url, ip, language, res);
 });
 
 
 app.get('/google-home-rebuild-latest', function (req, res) {
-  var text = rebuild.getLatestUrl();
-  console.log(text);
-
-  notifyToGoogleHome(text, ip, language, res);
+  rebuild.getLatestUrl().then(function(url){
+    console.log(url);
+    notifyToGoogleHome(url, ip, language, res);
+  });
 });
 
 app.get('/google-home-rebuild-random', function (req, res) {
-  var text = rebuild.getRandomUrl();
-  console.log(text);
+  var url = rebuild.getRandomUrl();
+  console.log(url);
 
-  notifyToGoogleHome(text, ip, language, res);
+  notifyToGoogleHome(url, ip, language, res);
 });
 
 
