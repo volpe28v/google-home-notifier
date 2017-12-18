@@ -18,9 +18,9 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 var sheet;
 ngrokUrlSheet.useServiceAccountAuth(credentials, function(err){
-   ngrokUrlSheet.getInfo(function(err, data){
-      sheet = data.worksheets[0];
-   });
+  ngrokUrlSheet.getInfo(function(err, data){
+    sheet = data.worksheets[0];
+  });
 });
 
 var backspace = require('./backspace-rss');
