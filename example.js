@@ -79,6 +79,15 @@ app.get('/google-home-backspace-random', function (req, res) {
   notifyToGoogleHome(url, ip, language, res);
 });
 
+app.get('/google-home-backspace-update', function (req, res) {
+  backspace.getRss().then(function(result){
+    return backspace.getLatestUrl();
+  }).then(function(url){
+    console.log("updated backspace.fm : " + url);
+    res.send("updated backspace.fm : " + url + '\n');
+  });
+});
+
 
 app.get('/google-home-rebuild-latest', function (req, res) {
   rebuild.getLatestUrl().then(function(url){
@@ -92,6 +101,15 @@ app.get('/google-home-rebuild-random', function (req, res) {
   console.log(url);
 
   notifyToGoogleHome(url, ip, language, res);
+});
+
+app.get('/google-home-rebuild-update', function (req, res) {
+  rebuild.getRss().then(function(result){
+    return rebuild.getLatestUrl();
+  }).then(function(url){
+    console.log("updated rebuild.fm : " + url);
+    res.send("updated rebuild.fm : " + url + '\n');
+  });
 });
 
 
@@ -132,8 +150,10 @@ app.listen(serverPort, function () {
     console.log('curl -X GET ' + url + '/google-home-notifier?text=Hello+Google+Home');
     console.log('curl -X GET ' + url + '/google-home-backspace-latest');
     console.log('curl -X GET ' + url + '/google-home-backspace-random');
+    console.log('curl -X GET ' + url + '/google-home-backspace-update');
     console.log('curl -X GET ' + url + '/google-home-rebuild-latest');
     console.log('curl -X GET ' + url + '/google-home-rebuild-random');
+    console.log('curl -X GET ' + url + '/google-home-rebuild-update');
     console.log('POST example:');
     console.log('curl -X POST -d "text=Hello Google Home" ' + url + '/google-home-notifier');
 

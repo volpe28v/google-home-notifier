@@ -10,14 +10,13 @@ module.exports.startCron = function(){
 }
 
 module.exports.getRss = function(){
-  rssReader.getRss();
+  return rssReader.getRss();
 }
 
 module.exports.getLatestUrl = function(){
   return new Promise(function(resolve, reject){
     resolve(rssReader.getLatestUrl());
   });
-
 }
 
 module.exports.getRandomUrl = function(){

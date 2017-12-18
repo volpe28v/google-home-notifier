@@ -10,7 +10,7 @@ module.exports.startCron = function(){
 }
 
 module.exports.getRss = function(){
-  rssReader.getRss();
+  return rssReader.getRss();
 }
 
 module.exports.getLatestUrl = function(){
