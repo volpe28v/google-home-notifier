@@ -15,9 +15,7 @@ module.exports.getRss = function(){
 
 module.exports.getLatestUrl = function(){
   return new Promise(function(resolve, reject){
-    rssReader.getRss().then(function(){
-      resolve(rssReader.getLatestUrl());
-    })
+    resolve(rssReader.getLatestUrl());
   });
 
 }
