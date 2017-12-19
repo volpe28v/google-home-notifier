@@ -1,11 +1,14 @@
 var request = require("request");
 var CronJob = require('cron').CronJob;
+var parser = require('xml2json');
+var jsonfile = require('jsonfile');
+var moment = require('moment');
 
 function RssReader(url){
   var self = this;
 
   this.url = url;
-  this.mp3Urls = [];
+  this.items = [];
 
   this.startCron = function(pattern){
     new CronJob({
@@ -22,16 +25,18 @@ function RssReader(url){
       request.get({
         url: self.url
       }, function(error, reaponse, body){
-        var lines = body.split("\n");
+        var json = parser.toJson(body);
 
-        self.mp3Urls = lines.filter(function(line){
-          return line.match(/enclosure/);
-        })
-        .map(function(line){
-          return line.split('"')[1];
+        self.items = JSON.parse(json).rss.channel.item.map(function(item){
+          return {
+            date: moment(item.pubDate),
+            url: item.enclosure.url,
+            duration: toSeconds(item["itunes:duration"])
+          };
         });
 
-        console.log(self.url + " " + self.mp3Urls.length + " episodes.");
+        //console.log(self.items);
+        console.log(self.url + " " + self.items.length + " episodes.");
         console.log("\tlatest " + self.getLatestUrl());
         
         resolve();
@@ -40,19 +45,30 @@ function RssReader(url){
   }
 
   this.getLatestUrl = function(){
-    if (self.mp3Urls.length == 0){
+    if (self.items.length == 0){
       return null;
     }
 
-    return self.mp3Urls[0];
+    return self.items[0].url;
   }
 
   this.getRandomUrl = function(){
-    if (self.mp3Urls.length == 0){
+    if (self.items.length == 0){
       return null;
     }
 
-    return self.mp3Urls[Math.floor( Math.random() * self.mp3Urls.length )];
+    return self.items[Math.floor( Math.random() * self.items.length )].url;
+  }
+}
+
+function toSeconds(duration){
+  var elems = duration.split(":");
+  switch(elems.length){
+    case 2: // mm:ss
+      return Number(elems[0]) * 60 + Number(elems[1]);
+
+    case 3: // hh:mm:ss
+      return Number(elems[0]) * 3600 + Number(elems[1]) * 60 + Number(elems[2]);
   }
 }
 

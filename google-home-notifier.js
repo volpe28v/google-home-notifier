@@ -98,7 +98,7 @@ var onDeviceUp = function(host, url, callback) {
       player.on('status', function(status) {
         switch(status.playerState){
           case 'PLAYING':
-            startProgressTimer(player);
+            startProgressTimer(player, callback);
             break;
 
           case 'PAUSED':
@@ -111,12 +111,12 @@ var onDeviceUp = function(host, url, callback) {
         var beforeTime = storage.getBeforeTime(media.contentId);
         if (beforeTime > 0){
           player.seek(beforeTime, function(err, status) {
-            callback('seek to ' + beforeTime);
+            callback({isFirst: true, body: 'seek to ' + beforeTime});
           });
           return;
         }
 
-        callback('Device notified');
+        callback({isFirst: true, body: 'Deice notified'});
       });
     });
   });
@@ -124,11 +124,11 @@ var onDeviceUp = function(host, url, callback) {
   client.on('error', function(err) {
     console.log('Error: %s', err.message);
     client.close();
-    callback('error');
+    callback({isFirst: true, body: 'error'});
   });
 };
 
-function startProgressTimer(player){
+function startProgressTimer(player, callback){
   stopProgressTimer();
   statusTimer = setInterval(function(){
     player.getStatus(function(err, status){
@@ -138,8 +138,7 @@ function startProgressTimer(player){
         return;
       }
 
-      console.log(status.media.contentId + " : " + status.currentTime);
-      storage.setBeforeTime(status.media.contentId, status.currentTime);
+      callback({isFirst: false, body: status});
     });
   }, 10*1000);
 }

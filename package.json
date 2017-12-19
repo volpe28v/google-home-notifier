@@ -22,6 +22,8 @@
     "google-tts-api": "https://github.com/darrencruse/google-tts/tarball/british-voice",
     "jsonfile": "^4.0.0",
     "mdns": "^2.3.3",
-    "ngrok": "^2.2.4"
+    "moment": "^2.20.1",
+    "ngrok": "^2.2.24",
+    "xml2json": "^0.11.0"
   }
 }

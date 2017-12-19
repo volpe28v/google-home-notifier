@@ -23,7 +23,7 @@ module.exports.getBeforeTime = function(url){
   }
 }
 
-module.exports.setBeforeTime = function(url, time){
+module.exports.setBeforeTime = function(url, time, duration){
   var json = null;
   try{
     json = jsonfile.readFileSync(FileName, {
@@ -38,10 +38,10 @@ module.exports.setBeforeTime = function(url, time){
     if (item.length > 0){
       item[0].time = time;
     }else{
-      json.push({url: url, time: time});
+      json.push({url: url, time: time, duration: duration});
     }
   }catch(e){
-    json = [{url: url, time: time}];
+    json = [{url: url, time: time, duration: duration}];
   }
 
   jsonfile.writeFileSync(FileName, json, {

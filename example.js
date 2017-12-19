@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var GoogleSpreadsheet = require('google-spreadsheet');
 var ngrokUrlSheet = new GoogleSpreadsheet(process.env.SPREAD_KEY); //コピーしたスプレッドシートのKey
 var credentials = require('./GoogleHome.json'); //作成した認証キーへのパス
+var storage = require('./jsonfile-storage');
 
 var app = express();
 const serverPort = 8091; // default port
@@ -122,13 +123,20 @@ function notifyToGoogleHome(text, ip, language, res){
       if (text.startsWith('http')){
         var mp3_url = text;
         googlehome.play(mp3_url, function(notifyRes) {
-          console.log(notifyRes);
-          res.send(deviceName + ' will play sound from url: ' + mp3_url + '\n');
+          if (notifyRes.isFirst){
+            res.send(deviceName + ' will play sound from url: ' + mp3_url + '\n');
+          }else{
+            var status = notifyRes.body;
+
+            console.log(status.media.contentId + " : " + status.currentTime + " / " + status.media.duration);
+            storage.setBeforeTime(status.media.contentId, status.currentTime, status.media.duration);
+          }
         });
       } else {
         googlehome.notify(text, function(notifyRes) {
-          console.log(notifyRes);
-          res.send(deviceName + ' will say: ' + text + '\n');
+          if (notifyRes.isFirst){
+            res.send(deviceName + ' will say: ' + text + '\n');
+          }
         });
       }
     } catch(err) {
@@ -141,8 +149,11 @@ function notifyToGoogleHome(text, ip, language, res){
   }
 }
 
-app.listen(serverPort, function () {
+app.listen(serverPort, function (err) {
+  if (err) console.log(err);
   ngrok.connect(serverPort, function (err, url) {
+    if (err) console.log(err);
+
     console.log('Endpoints:');
     console.log('    http://' + ip + ':' + serverPort + '/google-home-notifier');
     console.log('    ' + url + '/google-home-notifier');
