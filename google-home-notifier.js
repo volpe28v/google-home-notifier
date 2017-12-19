@@ -129,6 +129,7 @@ var onDeviceUp = function(host, url, callback) {
 };
 
 function startProgressTimer(player){
+  stopProgressTimer();
   statusTimer = setInterval(function(){
     player.getStatus(function(err, status){
       if (status == null){
