@@ -129,8 +129,9 @@ function init_app(){
               res.send(deviceName + ' will play sound from url: ' + mp3_url + '\n');
             }else{
               var status = notifyRes.body;
+              var remain = Math.ceil((status.media.duration - status.currentTime) / 60);
 
-              console.log(status.media.contentId + " : " + status.currentTime + " / " + status.media.duration);
+              console.log(status.media.contentId + " : " + status.currentTime + " / " + status.media.duration + "  残り" + remain + "分");
               storage.setBeforeTime(status.media.contentId, status.currentTime, status.media.duration);
             }
           });
