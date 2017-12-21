@@ -130,7 +130,7 @@ var onDeviceUp = function(host, url, callback) {
 
 function startProgressTimer(player, callback){
   stopProgressTimer();
-  statusTimer = setInterval(function(){
+  statusTimer = setTimeout(function(){
     player.getStatus(function(err, status){
       if (status == null){
         clearInterval(statusTimer);
@@ -139,6 +139,7 @@ function startProgressTimer(player, callback){
       }
 
       callback({isFirst: false, body: status});
+      startProgressTimer(player, callback);
     });
   }, 10*1000);
 }

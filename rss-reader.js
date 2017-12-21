@@ -3,6 +3,7 @@ var CronJob = require('cron').CronJob;
 var parser = require('xml2json');
 var jsonfile = require('jsonfile');
 var moment = require('moment');
+var storage = require('./jsonfile-storage');
 
 function RssReader(url){
   var self = this;
@@ -49,7 +50,13 @@ function RssReader(url){
       return null;
     }
 
-    return self.items[0].url;
+    // 未再生の最新を検索する
+    for (var i = 0; i < self.items.length; i++){
+      if (!storage.isFinished(self.items[i].url)){
+        return self.items[i].url;
+      }
+    }
+    return null;
   }
 
   this.getRandomUrl = function(){
@@ -57,7 +64,24 @@ function RssReader(url){
       return null;
     }
 
-    return self.items[Math.floor( Math.random() * self.items.length )].url;
+    var randomItems = self.items.concat();
+
+    // ランダムソート
+    for(var i = randomItems.length - 1; i > 0; i--){
+      var r = Math.floor(Math.random() * (i + 1));
+      var tmp = randomItems[i];
+      randomItems[i] = randomItems[r];
+      randomItems[r] = tmp;
+    }
+
+    // 未再生を検索
+    for (var i = 0; i < randomItems.length; i++){
+      if (!storage.isFinished(randomItems[i].url)){
+        return randomItems[i].url;
+      }
+    }
+
+    return null;
   }
 }
 
