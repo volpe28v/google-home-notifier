@@ -83,7 +83,7 @@ var getPlayUrl = function(url, host, callback) {
 var statusTimer = null;
 
 var onDeviceUp = function(host, url, callback) {
-  if (statusTimer) clearInterval(statusTimer);
+  stopProgressTimer();
 
   var client = new Client();
   client.connect(host, function() {
@@ -129,8 +129,11 @@ var onDeviceUp = function(host, url, callback) {
 };
 
 function startProgressTimer(player, callback){
-  stopProgressTimer();
+  if (statusTimer != null) return;
+
   statusTimer = setTimeout(function(){
+    stopProgressTimer();
+
     player.getStatus(function(err, status){
       if (status == null){
         clearInterval(statusTimer);
@@ -139,7 +142,16 @@ function startProgressTimer(player, callback){
       }
 
       callback({isFirst: false, body: status});
-      startProgressTimer(player, callback);
+
+      switch(status.playerState){
+        case 'PLAYING':
+          startProgressTimer(player, callback);
+          break;
+
+        case 'PAUSED':
+          stopProgressTimer();
+          break;
+      }
     });
   }, 10*1000);
 }
