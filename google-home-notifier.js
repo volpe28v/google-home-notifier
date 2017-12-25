@@ -124,7 +124,6 @@ var onDeviceUp = function(host, url, callback) {
   client.on('error', function(err) {
     console.log('Error: %s', err.message);
     client.close();
-    callback({isFirst: true, body: 'error'});
   });
 };
 
