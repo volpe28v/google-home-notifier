@@ -4,7 +4,9 @@
   "description": "",
   "main": "google-home-notifier.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --progress --colors -p",
+    "postinstall": "npm run build"
   },
   "author": "Noel Portugal",
   "keywords": [
@@ -24,6 +26,8 @@
     "mdns": "^2.3.3",
     "moment": "^2.20.1",
     "ngrok": "^2.2.24",
-    "xml2json": "^0.11.0"
+    "xml2json": "^0.11.0",
+    "axios": "^0.16.2",
+    "webpack": "^3.5.5"
   }
 }

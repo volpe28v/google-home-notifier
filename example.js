@@ -8,8 +8,12 @@ var ngrokUrlSheet = new GoogleSpreadsheet(process.env.SPREAD_KEY); //コピー�
 var credentials = require('./GoogleHome.json'); //作成した認証キーへのパス
 var storage = require('./jsonfile-storage');
 
+var path = require('path');
 var app = express();
 const serverPort = 8091; // default port
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 var deviceName = 'Google Home';
 var ip = process.env.GOOGLEHOME_IP; // default IP
@@ -153,6 +157,15 @@ function init_app(){
     }
   }
 
+  app.get('/podcast-data', function (req, res) {
+    var data = {};
+    data.rebuild = rebuild.getProgress();
+    data.backspace = backspace.getProgress();
+    
+    res.send(data);
+  });
+
+
   app.listen(serverPort, function (err) {
     if (err) console.log(err);
     ngrok.connect(serverPort, function (err, url) {
@@ -169,6 +182,7 @@ function init_app(){
       console.log('curl -X GET ' + url + '/google-home-rebuild-latest');
       console.log('curl -X GET ' + url + '/google-home-rebuild-random');
       console.log('curl -X GET ' + url + '/google-home-rebuild-update');
+      console.log('curl -X GET ' + url + '/podcast-data');
       console.log('POST example:');
       console.log('curl -X POST -d "text=Hello Google Home" ' + url + '/google-home-notifier');
 
@@ -186,5 +200,4 @@ function init_app(){
       });
     });
   });
-
 }

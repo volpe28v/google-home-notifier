@@ -22,3 +22,8 @@ module.exports.getLatestUrl = function(){
 module.exports.getRandomUrl = function(){
   return rssReader.getRandomUrl();
 }
+
+module.exports.getProgress = function(){
+  return rssReader.getProgress();
+}
+

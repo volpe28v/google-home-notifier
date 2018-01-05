@@ -31,6 +31,8 @@ function RssReader(url){
         self.items = JSON.parse(json).rss.channel.item.map(function(item){
           return {
             date: moment(item.pubDate),
+            title: item.title,
+            link: item.link,
             url: item.enclosure.url,
             duration: toSeconds(item["itunes:duration"])
           };
@@ -82,6 +84,14 @@ function RssReader(url){
     }
 
     return null;
+  }
+
+  this.getProgress = function(){
+    for (var i = 0; i < self.items.length; i++){
+      self.items[i].time = storage.getBeforeTime(self.items[i].url);
+    }
+
+    return self.items;
   }
 }
 

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Goole Home Podcast Progress</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <link href="css/index.css" media="screen" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div id="app">
+      <div class="row">
+        <div>Rebuild.fm</div>
+        <li v-for="item in data.rebuild">
+          <a :href="item.link" target="_blank" :class="itemClass(item)">
+            {{item.title}} {{parseInt(item.time)}}/{{item.duration}}
+          </a>
+        </li>
+      </div>
+
+      <div class="row">
+        <div>Backspace.fm</div>
+        <li v-for="item in data.backspace">
+          <a :href="item.link" target="_blank" :class="itemClass(item)">
+            {{item.title}} {{parseInt(item.time)}}/{{item.duration}}
+          </a>
+        </li>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script type="text/javascript" src="dist/bundle.js">
+    </script>
+  </body>
+</html>
