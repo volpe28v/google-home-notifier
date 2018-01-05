@@ -3,10 +3,17 @@ Play rebuild.fm and backspace.fm on Google Home.
 
 <img width="939" alt="2018-01-06 0 42 44" src="https://user-images.githubusercontent.com/754962/34616170-b401d0fa-f27a-11e7-8ffd-fcdeb6e57e6e.png">
 
+
+## Installation
 ```
 $ npm install
 $ SPREAD_KEY=<SpreadSheetKey> GOOGLEHOME_IP=<GoogleHomeIP> node example.js
 ```
+
+## Progress page
+access to http://localhost:8091/
+
+
 
 
 ---
