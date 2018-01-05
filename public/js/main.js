@@ -15,6 +15,23 @@ new Vue({
         rebuild: [],
         backspace: []
       },
+      abstract: {
+        rebuild: {
+          noplay: 0,
+          during: 0,
+          complete: 0,
+          remain: 0,
+          total: 0,
+        },
+        backspace: {
+          noplay: 0,
+          during: 0,
+          complete: 0,
+          remain: 0,
+          total: 0,
+        }
+      },
+ 
     }
   },
 
@@ -43,6 +60,8 @@ new Vue({
             console.log(response);
             self.message = "";
             self.data = response.data;
+            self.abstract.rebuild = self.getAbstract(self.data.rebuild);
+            self.abstract.backspace = self.getAbstract(self.data.backspace);
             resolve();
           })
           .catch(function (error) {
@@ -60,6 +79,35 @@ new Vue({
       }else{
         return "noplay";
       }
+    },
+
+    getAbstract: function(items){
+      var abst = {
+        noplay: 0,
+        during: 0,
+        complete: 0,
+        remain: 0,
+        total: 0,
+      }
+
+      var remain = 0;
+      var total = 0;
+      items.forEach(function(item){
+        if (item.duration - item.time < 20){
+          abst.complete++;
+        }else if (item.time > 0){
+          abst.during++;
+          remain += item.duration - item.time;
+        }else{
+          abst.noplay++;
+          remain += item.duration;
+        }
+        total += item.duration;
+      });
+
+      abst.remain = parseInt(remain/60);
+      abst.total = parseInt(total/60);
+      return abst;
     }
   }
 });

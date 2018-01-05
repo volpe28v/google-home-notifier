@@ -19,6 +19,10 @@ html,body {
   color: yellow;
 }
 
+.abstract {
+  font-size: 14px;
+}
+
 .noplay {
   color: white;
 }
