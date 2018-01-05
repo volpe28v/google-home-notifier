@@ -1,6 +1,7 @@
 *.swp
 podcast.json
 GoogleHome.json
+bundle.js
 
 # Logs
 logs
