@@ -108,6 +108,25 @@ new Vue({
       abst.remain = parseInt(remain/60);
       abst.total = parseInt(total/60);
       return abst;
+    },
+
+    play: function(item){
+      var self = this;
+
+      return new Promise(function(resolve, reject){
+        self.message = "play " + item.title;
+
+        axios.get('/podcast-play', {params:{ url: item.url}})
+          .then(function (response) {
+            self.message = "";
+            resolve();
+          })
+          .catch(function (error) {
+            self.message = "play error.";
+            reject();
+          });
+      });
+
     }
   }
 });

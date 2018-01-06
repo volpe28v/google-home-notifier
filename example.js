@@ -165,6 +165,9 @@ function init_app(){
     res.send(data);
   });
 
+  app.get('/podcast-play', function (req, res) {
+    notifyToGoogleHome(req.query.url, ip, language, res);
+  });
 
   app.listen(serverPort, function (err) {
     if (err) console.log(err);
