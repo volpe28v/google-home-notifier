@@ -10,6 +10,19 @@ var storage = require('./jsonfile-storage');
 
 var path = require('path');
 var app = express();
+var server = require('http').createServer(app);
+
+var io = require('socket.io').listen(server,{ 'destroy buffer size': Infinity });
+io.sockets.on('connection', function(client) {
+  console.log("New Connection from " + client.client.id);
+
+  var data = {};
+  data.rebuild = rebuild.getProgress();
+  data.backspace = backspace.getProgress();
+  client.emit('data', data);
+});
+
+
 const serverPort = 8091; // default port
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -138,6 +151,8 @@ function init_app(){
 
               console.log(status.media.contentId + " : " + status.currentTime + " / " + status.media.duration + "  残り" + remain + "分");
               storage.setBeforeTime(status.media.contentId, status.currentTime, status.media.duration);
+
+              io.sockets.emit('progress', {url: mp3_url, time: status.currentTime});
             }
           });
         } else {
@@ -169,7 +184,7 @@ function init_app(){
     notifyToGoogleHome(req.query.url, ip, language, res);
   });
 
-  app.listen(serverPort, function (err) {
+  server.listen(serverPort, function (err) {
     if (err) console.log(err);
     ngrok.connect(serverPort, function (err, url) {
       if (err) console.log(err);

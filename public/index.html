@@ -10,6 +10,13 @@
   <body>
     <div id="app">
       <div class="header">
+        <div class="playing" v-if="current_item.title != ''">
+          Playing 
+          <a :href="current_item.link" target="_blank">
+            {{current_item.title}} {{parseInt(current_item.time)}}/{{current_item.duration}}
+          </a>
+          - 残り{{parseInt((current_item.duration - current_item.time)/60)}}分
+        </div>
       </div>
       <div class="body">
         <div class="row">

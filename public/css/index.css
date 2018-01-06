@@ -21,8 +21,18 @@ html,body {
 }
 
 .header {
-  height: 0px;
+  height: 30px;
 }
+
+.playing {
+  padding: 5px;
+}
+
+.playing a {
+  text-decoration:none;
+  color: white;
+}
+
 
 .body {
   flex: 1;
@@ -38,7 +48,7 @@ html,body {
 }
 
 .during{
-  color: pink;
+  color: springgreen;
 }
 
 .complete{

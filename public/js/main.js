@@ -1,5 +1,11 @@
 var axios = require("axios");
 
+var socket = require('socket.io-client')('/', {});
+
+socket.on('connect', function() {
+  console.log("connected socket.io");
+});
+
 var router = new VueRouter({
   mode: 'history',
   routes: []
@@ -11,6 +17,12 @@ new Vue({
   data: function(){
     return {
       message: "",
+      current_item: {
+        title: "",
+        link: "",
+        time: 0,
+        duration: 0,
+      },
       data: {
         rebuild: [],
         backspace: []
@@ -36,7 +48,36 @@ new Vue({
   },
 
   mounted: function(){
-    this.reload();
+    var self = this;
+
+    socket.on("data", function(data){
+      self.data = data;
+      self.abstract.rebuild = self.getAbstract(self.data.rebuild);
+      self.abstract.backspace = self.getAbstract(self.data.backspace);
+    });
+
+    socket.on("progress", function(data){
+      // rebuild
+      var rebuild_found = self.data.rebuild.filter(function(item){
+        return item.url === data.url;
+      })[0];
+      if (rebuild_found){
+        rebuild_found.time = data.time;
+        self.current_item = rebuild_found;
+      }
+      self.abstract.rebuild = self.getAbstract(self.data.rebuild);
+
+      // backspace
+      var backspace_found = self.data.backspace.filter(function(item){
+        return item.url === data.url;
+      })[0];
+      if (backspace_found){
+        backspace_found.time = data.time;
+        self.current_item = backspace_found;
+      }
+      self.abstract.backspace = self.getAbstract(self.data.backspace);
+    });
+
   },
 
   watch: {
@@ -49,28 +90,6 @@ new Vue({
   },
 
   methods: {
-    reload: function(){
-      var self = this;
-
-      return new Promise(function(resolve, reject){
-        self.message = "now loading...";
-
-        axios.get('/podcast-data', {})
-          .then(function (response) {
-            console.log(response);
-            self.message = "";
-            self.data = response.data;
-            self.abstract.rebuild = self.getAbstract(self.data.rebuild);
-            self.abstract.backspace = self.getAbstract(self.data.backspace);
-            resolve();
-          })
-          .catch(function (error) {
-            self.message = "load error.";
-            reject();
-          });
-      });
-    },
-
     itemClass: function(item){
       if (item.duration - item.time < 20){
         return "complete";
