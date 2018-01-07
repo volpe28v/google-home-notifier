@@ -32,15 +32,15 @@ new Vue({
           noplay: 0,
           during: 0,
           complete: 0,
-          remain: 0,
-          total: 0,
+          time: 0,
+          duration: 0,
         },
         backspace: {
           noplay: 0,
           during: 0,
           complete: 0,
-          remain: 0,
-          total: 0,
+          time: 0,
+          duration: 0,
         }
       },
  
@@ -91,7 +91,7 @@ new Vue({
 
   methods: {
     itemClass: function(item){
-      if (item.duration - item.time < 20){
+      if (item.duration - item.time < 60){
         return "complete";
       }else if (item.time > 0){
         return "during";
@@ -105,27 +105,26 @@ new Vue({
         noplay: 0,
         during: 0,
         complete: 0,
-        remain: 0,
-        total: 0,
+        time: 0,
+        duration: 0,
       }
 
-      var remain = 0;
-      var total = 0;
+      var time = 0;
+      var duration = 0;
       items.forEach(function(item){
         if (item.duration - item.time < 20){
           abst.complete++;
         }else if (item.time > 0){
           abst.during++;
-          remain += item.duration - item.time;
         }else{
           abst.noplay++;
-          remain += item.duration;
         }
-        total += item.duration;
+        time += item.time;
+        duration += item.duration;
       });
 
-      abst.remain = parseInt(remain/60);
-      abst.total = parseInt(total/60);
+      abst.time = time;
+      abst.duration = duration;
       return abst;
     },
 
@@ -145,7 +144,21 @@ new Vue({
             reject();
           });
       });
+    },
 
+    showRemain: function(item){
+      var remain = (item.duration - item.time)/60;
+      return this.paddingZero(remain/60) + ":" + this.paddingZero(remain%60);
+    },
+
+    showTotal: function(item){
+      var total = item.duration/60;
+      return this.paddingZero(total/60) + ":" + this.paddingZero(total%60);
+    },
+
+    paddingZero: function(num){
+      var numStr = parseInt(num) + "";
+      return numStr.length > 2 ? numStr : ('00' + numStr).slice(-2);
     }
   }
 });

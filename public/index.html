@@ -13,9 +13,9 @@
         <div class="playing" v-if="current_item.title != ''">
           Playing 
           <a :href="current_item.link" target="_blank">
-            {{current_item.title}} {{parseInt(current_item.time)}}/{{current_item.duration}}
+            {{current_item.title}}
           </a>
-          - 残り{{parseInt((current_item.duration - current_item.time)/60)}}分
+          {{showRemain(current_item)}} / {{showTotal(current_item)}}
         </div>
       </div>
       <div class="body">
@@ -26,14 +26,14 @@
             <span class="during">{{abstract.rebuild.during}}</span> / 
             <span class="noplay">{{abstract.rebuild.noplay}}</span>
             ] - 
-            残り<span class="remain">{{abstract.rebuild.remain}}</span>分 
+            {{showRemain(abstract.rebuild)}} / {{showTotal(abstract.rebuild)}}
           </div>
 
           <ul>
             <li v-for="item in data.rebuild">
               <a class="play" v-on:click="play(item)">▶︎</a>
               <a :href="item.link" target="_blank" :class="itemClass(item)">
-                {{item.title}} {{parseInt(item.time)}}/{{item.duration}}
+                {{item.title}} - {{showRemain(item)}} / {{showTotal(item)}}
               </a>
             </li>
           </ul>
@@ -46,13 +46,13 @@
             <span class="during">{{abstract.backspace.during}}</span> / 
             <span class="noplay">{{abstract.backspace.noplay}}</span> 
             ] - 
-            残り<span class="remain">{{abstract.backspace.remain}}</span>分 
+            {{showRemain(abstract.backspace)}} / {{showTotal(abstract.backspace)}}
           </div>
           <ul>
             <li v-for="item in data.backspace">
               <a class="play" v-on:click="play(item)">▶︎</a>
               <a :href="item.link" target="_blank" :class="itemClass(item)">
-                {{item.title}} {{parseInt(item.time)}}/{{item.duration}}
+                {{item.title}} - {{showRemain(item)}} / {{showTotal(item)}}
               </a>
             </li>
           </ul>
