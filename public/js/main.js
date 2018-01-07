@@ -112,7 +112,7 @@ new Vue({
       var time = 0;
       var duration = 0;
       items.forEach(function(item){
-        if (item.duration - item.time < 20){
+        if (item.duration - item.time < 60){
           abst.complete++;
         }else if (item.time > 0){
           abst.during++;
