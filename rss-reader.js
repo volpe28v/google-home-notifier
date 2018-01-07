@@ -10,7 +10,14 @@ function RssReader(url){
 
   this.url = url;
   this.items = [];
+  this.handlers = {
+    onUpdated: function(){}
+  }
 
+  this.setHandlers = function(handlers){
+    self.handlers = handlers;
+  }
+  
   this.startCron = function(pattern){
     new CronJob({
       cronTime: pattern,
@@ -42,6 +49,7 @@ function RssReader(url){
         console.log(self.url + " " + self.items.length + " episodes.");
         console.log("\tlatest " + self.getLatestUrl());
         
+        self.handlers.onUpdated();
         resolve();
       });
     });

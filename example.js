@@ -15,12 +15,15 @@ var server = require('http').createServer(app);
 var io = require('socket.io').listen(server,{ 'destroy buffer size': Infinity });
 io.sockets.on('connection', function(client) {
   console.log("New Connection from " + client.client.id);
+  updatePodcastData(client);
+});
 
+function updatePodcastData(client){
   var data = {};
   data.rebuild = rebuild.getProgress();
   data.backspace = backspace.getProgress();
   client.emit('data', data);
-});
+}
 
 
 const serverPort = 8091; // default port
@@ -37,9 +40,19 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var backspace = require('./backspace-rss');
 var rebuild = require('./rebuild-rss');
 
+backspace.setHandlers({
+  onUpdated: function(){
+    updatePodcastData(io.sockets);
+  }
+});
 backspace.getRss();
 backspace.startCron();
 
+rebuild.setHandlers({
+  onUpdated: function(){
+    updatePodcastData(io.sockets);
+  }
+});
 rebuild.getRss();
 rebuild.startCron();
 
@@ -104,6 +117,7 @@ function init_app(){
       return backspace.getLatestUrl();
     }).then(function(url){
       console.log("updated backspace.fm : " + url);
+      updatePodcastData(io.sockets);
       res.send("updated backspace.fm : " + url + '\n');
     });
   });
@@ -128,6 +142,7 @@ function init_app(){
       return rebuild.getLatestUrl();
     }).then(function(url){
       console.log("updated rebuild.fm : " + url);
+      updatePodcastData(io.sockets);
       res.send("updated rebuild.fm : " + url + '\n');
     });
   });

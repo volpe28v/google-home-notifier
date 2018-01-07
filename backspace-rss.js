@@ -4,6 +4,10 @@ var RssUrl = 'http://feeds.backspace.fm/backspacefm';
 
 var rssReader = new RssReader(RssUrl);
 
+module.exports.setHandlers = function(handlers){
+  rssReader.setHandlers(handlers);
+}
+
 module.exports.startCron = function(){
   var cronTime = '30 0 0 * * *';
   rssReader.startCron(cronTime);

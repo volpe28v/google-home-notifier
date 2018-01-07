@@ -4,6 +4,10 @@ var RssUrl = 'http://feeds.rebuild.fm/rebuildfm';
 
 var rssReader = new RssReader(RssUrl);
 
+module.exports.setHandlers = function(handlers){
+  rssReader.setHandlers(handlers);
+}
+
 module.exports.startCron = function(){
   var cronTime = '0 0 0 * * *';
   rssReader.startCron(cronTime);
