@@ -111,12 +111,12 @@ var onDeviceUp = function(host, url, callback) {
         var beforeTime = storage.getBeforeTime(media.contentId);
         if (beforeTime > 0){
           player.seek(beforeTime, function(err, status) {
-            callback({isFirst: true, body: 'seek to ' + beforeTime});
+            callback({isFirst: true, body: { currentTime: beforeTime}});
           });
           return;
         }
 
-        callback({isFirst: true, body: 'Deice notified'});
+        callback({isFirst: true, body: { currentTime: 0}});
       });
     });
   });

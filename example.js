@@ -142,18 +142,20 @@ function init_app(){
         if (text.startsWith('http')){
           var mp3_url = text;
           googlehome.play(mp3_url, function(notifyRes) {
+            var status = notifyRes.body;
+
             if (notifyRes.isFirst){
               res.send(deviceName + ' will play sound from url: ' + mp3_url + '\n');
             }else{
-              var status = notifyRes.body;
               console.log(status.playerState);
               var remain = Math.ceil((status.media.duration - status.currentTime) / 60);
 
               console.log(status.media.contentId + " : " + status.currentTime + " / " + status.media.duration + "  残り" + remain + "分");
               storage.setBeforeTime(status.media.contentId, status.currentTime, status.media.duration);
 
-              io.sockets.emit('progress', {url: mp3_url, time: status.currentTime});
             }
+
+            io.sockets.emit('progress', {url: mp3_url, time: status.currentTime});
           });
         } else {
           googlehome.notify(text, function(notifyRes) {
