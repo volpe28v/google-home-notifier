@@ -21,11 +21,14 @@ html,body {
 }
 
 .header {
-  height: 30px;
+  height: 35px;
+  width: 100%;
+  position: fixed;
+  background: #222;
 }
 
 .playing {
-  padding: 5px;
+  padding: 5px 5px 5px 10px;
 }
 
 .playing a {
@@ -37,6 +40,7 @@ html,body {
 .body {
   flex: 1;
   display: flex;
+  margin-top: 35px;
 }
 
 .abstract {
@@ -57,7 +61,7 @@ html,body {
 
 .row{
   flex: 1;
-  padding: 5px;
+  padding: 5px 5px 5px 10px;
   font-size: 12px;
 }
 
