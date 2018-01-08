@@ -1,4 +1,5 @@
 var axios = require("axios");
+var _ = require('lodash');
 
 var socket = require('socket.io-client')('/', {});
 
@@ -17,6 +18,8 @@ new Vue({
   data: function(){
     return {
       message: "",
+      keyword: "",
+      fixedKeyword: "",
       current_item: {
         title: "",
         link: "",
@@ -83,10 +86,33 @@ new Vue({
   watch: {
     message: function(val){
       console.log(val);
-    }
+    },
+    keyword: function(val){
+      this.search();
+    },
   },
 
   computed: {
+    rebuildList: function(){
+      var self = this;
+      return this.data.rebuild.filter(function(item){
+        if (self.fixedKeyword == ""){
+          return true;
+        }else{
+          return item.title.toLowerCase().match(self.fixedKeyword.toLowerCase());
+        }
+      });
+    },
+    backspaceList: function(){
+      var self = this;
+      return this.data.backspace.filter(function(item){
+        if (self.fixedKeyword == ""){
+          return true;
+        }else{
+          return item.title.toLowerCase().match(self.fixedKeyword.toLowerCase());
+        }
+      });
+    },
   },
 
   methods: {
@@ -159,6 +185,14 @@ new Vue({
     paddingZero: function(num){
       var numStr = parseInt(num) + "";
       return numStr.length > 2 ? numStr : ('00' + numStr).slice(-2);
-    }
+    },
+
+    search: _.debounce(
+      function () {
+        console.log(this.keyword);
+        this.fixedKeyword = this.keyword;
+      },
+      500
+    )
   }
 });

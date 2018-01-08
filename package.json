@@ -24,6 +24,7 @@
     "google-spreadsheet": "^2.0.4",
     "google-tts-api": "https://github.com/darrencruse/google-tts/tarball/british-voice",
     "jsonfile": "^4.0.0",
+    "lodash": "^4.17.4",
     "mdns": "^2.3.3",
     "moment": "^2.20.1",
     "ngrok": "^2.2.24",

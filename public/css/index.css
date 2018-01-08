@@ -21,14 +21,14 @@ html,body {
 }
 
 .header {
-  height: 35px;
+  height: 30px;
   width: 100%;
   position: fixed;
   background: #222;
+  padding: 5px 10px 0px 10px;
 }
 
 .playing {
-  padding: 5px 5px 5px 10px;
 }
 
 .playing a {
@@ -36,6 +36,10 @@ html,body {
   color: white;
 }
 
+.search {
+  float: right;
+  margin-right: 15px;
+}
 
 .body {
   flex: 1;

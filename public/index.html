@@ -10,16 +10,19 @@
   <body>
     <div id="app">
       <div class="header">
-        <div class="playing" v-if="current_item.title != ''">
+        <span class="playing" v-if="current_item.title != ''">
           Playing 
           <a :href="current_item.link" target="_blank">
             {{current_item.title}}
           </a>
           {{showRemain(current_item)}} / {{showTotal(current_item)}}
-        </div>
-        <div class="playing" v-else>
+        </span>
+        <span class="playing" v-else>
           Not Playing
-        </div>
+        </span>
+        <span class="search">
+          <input v-model.trim="keyword" placeholder="keyword"/>
+        </span>
       </div>
       <div class="body">
         <div class="row">
@@ -33,7 +36,7 @@
           </div>
 
           <ul>
-            <li v-for="item in data.rebuild">
+            <li v-for="item in rebuildList">
               <a class="play" v-on:click="play(item)">▶︎</a>
               <a :href="item.link" target="_blank" :class="itemClass(item)">
                 {{item.title}} - {{showRemain(item)}} / {{showTotal(item)}}
@@ -52,7 +55,7 @@
             {{showRemain(abstract.backspace)}} / {{showTotal(abstract.backspace)}}
           </div>
           <ul>
-            <li v-for="item in data.backspace">
+            <li v-for="item in backspaceList">
               <a class="play" v-on:click="play(item)">▶︎</a>
               <a :href="item.link" target="_blank" :class="itemClass(item)">
                 {{item.title}} - {{showRemain(item)}} / {{showTotal(item)}}
