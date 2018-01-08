@@ -1,5 +1,6 @@
 var axios = require("axios");
 var _ = require('lodash');
+var moment = require('moment');
 
 var socket = require('socket.io-client')('/', {});
 
@@ -180,6 +181,10 @@ new Vue({
     showTotal: function(item){
       var total = item.duration/60;
       return this.paddingZero(total/60) + ":" + this.paddingZero(total%60);
+    },
+
+    showDate: function(item){
+      return moment(item.date).format('YYYY.MM.DD');
     },
 
     paddingZero: function(num){

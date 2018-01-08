@@ -15,7 +15,8 @@
           <a :href="current_item.link" target="_blank">
             {{current_item.title}}
           </a>
-          {{showRemain(current_item)}} / {{showTotal(current_item)}}
+          - {{showDate(current_item)}}
+          - {{showRemain(current_item)}} / {{showTotal(current_item)}}
         </span>
         <span class="playing" v-else>
           Not Playing
