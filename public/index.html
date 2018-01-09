@@ -26,41 +26,45 @@
         </span>
       </div>
       <div class="body">
-        <div class="row">
+        <div class="row row-left">
           <div class="abstract">Rebuild.fm
-            [
-            <span class="complete">{{abstract.rebuild.complete}}</span> / 
-            <span class="during">{{abstract.rebuild.during}}</span> / 
-            <span class="noplay">{{abstract.rebuild.noplay}}</span>
-            ] - 
-            {{showRemain(abstract.rebuild)}} / {{showTotal(abstract.rebuild)}}
+            - 
+            <span class="noplay-count">{{abstract.rebuild.noplay}}</span>
+            <span class="during-count">{{abstract.rebuild.during}}</span>
+            <span class="complete-count">{{abstract.rebuild.complete}}</span>
+
+            <span class="abstract-time">
+              {{showRemain(abstract.rebuild)}} / {{showTotal(abstract.rebuild)}}
+            </span>
           </div>
 
           <ul>
-            <li v-for="item in rebuildList">
-              <a class="play" v-on:click="play(item)">▶︎</a>
-              <a :href="item.link" target="_blank" :class="itemClass(item)">
-                {{item.title}} - {{showRemain(item)}} / {{showTotal(item)}}
-              </a>
+            <li :class="itemClass(item)" v-for="item in rebuildList" v-on:click="play(item)">
+              {{item.title}}
+              <span class="item-time">
+                {{showRemain(item)}} / {{showTotal(item)}}
+              </span>
             </li>
           </ul>
         </div>
 
         <div class="row">
           <div class="abstract">Backspace.fm
-            [
-            <span class="complete">{{abstract.backspace.complete}}</span> / 
-            <span class="during">{{abstract.backspace.during}}</span> / 
-            <span class="noplay">{{abstract.backspace.noplay}}</span> 
-            ] - 
-            {{showRemain(abstract.backspace)}} / {{showTotal(abstract.backspace)}}
+            -  
+            <span class="noplay-count">{{abstract.backspace.noplay}}</span> 
+            <span class="during-count">{{abstract.backspace.during}}</span> 
+            <span class="complete-count">{{abstract.backspace.complete}}</span> 
+
+            <span class="abstract-time">
+              {{showRemain(abstract.backspace)}} / {{showTotal(abstract.backspace)}}
+            </span>
           </div>
           <ul>
-            <li v-for="item in backspaceList">
-              <a class="play" v-on:click="play(item)">▶︎</a>
-              <a :href="item.link" target="_blank" :class="itemClass(item)">
-                {{item.title}} - {{showRemain(item)}} / {{showTotal(item)}}
-              </a>
+            <li :class="itemClass(item)" v-for="item in backspaceList" v-on:click="play(item)">
+              {{item.title}}
+              <span class="item-time">
+                {{showRemain(item)}} / {{showTotal(item)}}
+              </span>
             </li>
           </ul>
         </div>

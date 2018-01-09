@@ -3,6 +3,8 @@ html,body {
   margin: 0px;
   background: #333;
   color: white;
+
+  font-family: "Helvetica Neue",Helvetica,"ヒラギノ角ゴ ProN W3","Hiragino Kaku Gothic ProN","メイリオ",Meiryo,sans-serif;
 }
 
 #app {
@@ -16,10 +18,6 @@ html,body {
   text-decoration:none;
 }
 
-#app a:hover{
-  color: yellow;
-}
-
 .header {
   height: 30px;
   width: 100%;
@@ -28,7 +26,8 @@ html,body {
   padding: 5px 10px 0px 10px;
 }
 
-.playing {
+.playing a:hover{
+  color: yellow;
 }
 
 .playing a {
@@ -44,37 +43,89 @@ html,body {
 .body {
   flex: 1;
   display: flex;
-  margin-top: 35px;
+  margin: 38px 1px 1px 1px;
 }
 
 .abstract {
   font-size: 14px;
+  margin-left: 10px;
+  color: rgb(202, 202, 202);
 }
 
+.abstract-time {
+  float: right;
+  margin-right: 14px;
+}
+
+.noplay-count {
+  color: rgb(202, 202, 202);
+}
+
+.during-count {
+  color: rgb(70, 155, 203);
+}
+
+.complete-count {
+  color: rgb(112, 112, 112);
+}
+
+
 .noplay {
+  background: rgb(102, 102, 102);
   color: white;
 }
 
-.during{
-  color: springgreen;
+.during {
+  background: rgb(20, 105, 153);
+  color: white;
 }
 
-.complete{
-  color: gray;
+.complete {
+  background: rgb(72, 72, 72);
+  color: #888;
 }
 
-.row{
+.row {
   flex: 1;
-  padding: 5px 5px 5px 10px;
   font-size: 12px;
+  overflow-y: auto;
+}
+
+.row-left {
+  margin-right: 1px;
 }
 
 .row ul {
   list-style: none;
-  padding-left: 10px;
+  padding-left: 0px;
   margin-top: 2px;
 }
 
-.play {
+.row li {
+  overflow: hidden;
+  margin-top: 1px;
+  padding: 4px 8px;
+
   cursor: pointer;
+
+  border-redius: 1px;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),0 1px 2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.row li:hover {
+  color: yellow;
+}
+
+.row li a {
+  color: white;
+}
+
+.item-time {
+  float: right;
+  margin-right: 5px;
 }
