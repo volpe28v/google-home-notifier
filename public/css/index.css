@@ -89,6 +89,7 @@ html,body {
   flex: 1;
   font-size: 12px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .row-left {
