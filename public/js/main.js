@@ -175,6 +175,8 @@ new Vue({
 
     showRemain: function(item){
       var remain = (item.duration - item.time)/60;
+      if (remain < 0) remain = 0;
+
       return this.paddingZero(remain/60) + ":" + this.paddingZero(remain%60);
     },
 

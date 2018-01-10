@@ -66,7 +66,7 @@ html,body {
 }
 
 .complete-count {
-  color: rgb(112, 112, 112);
+  color: rgb(142, 142, 142);
 }
 
 
@@ -81,8 +81,8 @@ html,body {
 }
 
 .complete {
-  background: rgb(72, 72, 72);
-  color: #888;
+  background: rgb(62, 62, 62);
+  color: #777;
 }
 
 .row {
