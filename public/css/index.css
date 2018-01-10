@@ -24,6 +24,10 @@ html,body {
   position: fixed;
   background: #222;
   padding: 5px 10px 0px 10px;
+
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .playing a:hover{
@@ -33,6 +37,7 @@ html,body {
 .playing a {
   text-decoration:none;
   color: white;
+
 }
 
 .search {
@@ -48,13 +53,17 @@ html,body {
 
 .abstract {
   font-size: 14px;
-  margin-left: 10px;
   color: rgb(202, 202, 202);
+
+  overflow: hidden;
+  margin-bottom: 4px;
+  padding: 4px 8px;
+
 }
 
 .abstract-time {
   float: right;
-  margin-right: 14px;
+  margin-right: 5px;
 }
 
 .noplay-count {
@@ -102,7 +111,7 @@ html,body {
   margin-top: 2px;
 }
 
-.row li {
+.row .item {
   overflow: hidden;
   margin-top: 1px;
   padding: 4px 8px;
@@ -118,15 +127,21 @@ html,body {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2),0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.row li:hover {
+.row .item:hover {
   color: yellow;
 }
 
-.row li a {
+.row .item a {
   color: white;
 }
 
 .item-time {
   float: right;
   margin-right: 5px;
+}
+
+@media screen and (max-width: 768px) {
+  .search {
+    display: none;
+  }
 }

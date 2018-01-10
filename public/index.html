@@ -3,6 +3,7 @@
   <head>
     <title>Goole Home Podcast Progress</title>
     <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="viewport" content="width=width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <link href="css/index.css" media="screen" rel="stylesheet" type="text/css">
@@ -27,19 +28,20 @@
       </div>
       <div class="body">
         <div class="row row-left">
-          <div class="abstract">Rebuild.fm
-            - 
-            <span class="noplay-count">{{abstract.rebuild.noplay}}</span>
-            <span class="during-count">{{abstract.rebuild.during}}</span>
-            <span class="complete-count">{{abstract.rebuild.complete}}</span>
-
-            <span class="abstract-time">
-              {{showRemain(abstract.rebuild)}} / {{showTotal(abstract.rebuild)}}
-            </span>
-          </div>
-
           <ul>
-            <li :class="itemClass(item)" v-for="item in rebuildList" v-on:click="play(item)">
+            <li class="abstract">Rebuild.fm
+              - 
+              <span class="noplay-count">{{abstract.rebuild.noplay}}</span>
+              <span class="during-count">{{abstract.rebuild.during}}</span>
+              <span class="complete-count">{{abstract.rebuild.complete}}</span>
+
+              <span class="abstract-time">
+                {{showRemain(abstract.rebuild)}} / {{showTotal(abstract.rebuild)}}
+              </span>
+            </li>
+
+
+            <li class="item" :class="itemClass(item)" v-for="item in rebuildList" v-on:click="play(item)">
               {{item.title}}
               <span class="item-time">
                 {{showRemain(item)}} / {{showTotal(item)}}
@@ -49,18 +51,19 @@
         </div>
 
         <div class="row">
-          <div class="abstract">Backspace.fm
-            -  
-            <span class="noplay-count">{{abstract.backspace.noplay}}</span> 
-            <span class="during-count">{{abstract.backspace.during}}</span> 
-            <span class="complete-count">{{abstract.backspace.complete}}</span> 
+         <ul>
+           <li class="abstract">Backspace.fm
+             -  
+             <span class="noplay-count">{{abstract.backspace.noplay}}</span> 
+             <span class="during-count">{{abstract.backspace.during}}</span> 
+             <span class="complete-count">{{abstract.backspace.complete}}</span> 
 
-            <span class="abstract-time">
-              {{showRemain(abstract.backspace)}} / {{showTotal(abstract.backspace)}}
-            </span>
-          </div>
-          <ul>
-            <li :class="itemClass(item)" v-for="item in backspaceList" v-on:click="play(item)">
+             <span class="abstract-time">
+               {{showRemain(abstract.backspace)}} / {{showTotal(abstract.backspace)}}
+             </span>
+           </li>
+
+            <li class="item" :class="itemClass(item)" v-for="item in backspaceList" v-on:click="play(item)">
               {{item.title}}
               <span class="item-time">
                 {{showRemain(item)}} / {{showTotal(item)}}
