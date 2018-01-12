@@ -30,6 +30,10 @@ html,body {
   text-overflow: ellipsis;
 }
 
+.header-mobile {
+  display: none;
+}
+
 .playing a:hover{
   color: yellow;
 }
@@ -141,7 +145,21 @@ html,body {
 }
 
 @media screen and (max-width: 768px) {
-  .search {
+  .header {
+    height: 52px;
+  }
+
+  .header-mobile {
+    display: block;
+    float: right;
+    margin-right: 12px;
+  }
+
+  .header-time, .search {
     display: none;
+  }
+
+  .body {
+    margin: 60px 1px 1px 1px;
   }
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Goole Home Podcast Progress</title>
+    <title>Goole Home Podcast</title>
     <meta charset="utf-8">
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="viewport" content="width=width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -11,21 +11,32 @@
   <body>
     <div id="app">
       <div class="header">
-        <span class="playing" v-if="current_item.title != ''">
-          Playing 
-          <a :href="current_item.link" target="_blank">
-            {{current_item.title}}
-          </a>
-          - {{showDate(current_item)}}
-          - {{showRemain(current_item)}} / {{showTotal(current_item)}}
-        </span>
-        <span class="playing" v-else>
-          Not Playing
-        </span>
-        <span class="search">
+        <div class="header-inner1">
+          <span class="playing" v-if="current_item.title != ''">
+            Playing 
+            <a :href="current_item.link" target="_blank">
+              {{current_item.title}}
+            </a>
+            <span class="header-time">
+            - {{showDate(current_item)}} - {{showRemain(current_item)}} / {{showTotal(current_item)}}
+            </span>
+          </span>
+          <span class="playing" v-else>
+            Not Playing
+          </span>
+          <span class="search">
+            <input v-model.trim="keyword" placeholder="keyword"/>
+          </span>
+        </div>
+        <div class="header-mobile">
+          <span v-if="current_item.title != ''">
+            {{showDate(current_item)}} - {{showRemain(current_item)}} / {{showTotal(current_item)}}
+          </span>
           <input v-model.trim="keyword" placeholder="keyword"/>
-        </span>
+        </div>
       </div>
+      <div class="header2">
+     </div>
       <div class="body">
         <div class="row row-left">
           <ul>
