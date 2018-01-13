@@ -41,7 +41,8 @@ function RssReader(url){
             title: item.title,
             link: item.link,
             url: item.enclosure.url,
-            duration: toSeconds(item["itunes:duration"])
+            duration: toSeconds(item["itunes:duration"]),
+            description: item.description
           };
         });
 

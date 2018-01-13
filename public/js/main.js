@@ -96,21 +96,25 @@ new Vue({
   computed: {
     rebuildList: function(){
       var self = this;
+      var keyword = self.fixedKeyword.toLowerCase();
       return this.data.rebuild.filter(function(item){
         if (self.fixedKeyword == ""){
           return true;
         }else{
-          return item.title.toLowerCase().match(self.fixedKeyword.toLowerCase());
+          return item.title.toLowerCase().match(keyword) ||
+                 item.description.toLowerCase().match(keyword);
         }
       });
     },
     backspaceList: function(){
       var self = this;
+      var keyword = self.fixedKeyword.toLowerCase();
       return this.data.backspace.filter(function(item){
         if (self.fixedKeyword == ""){
           return true;
         }else{
-          return item.title.toLowerCase().match(self.fixedKeyword.toLowerCase());
+          return item.title.toLowerCase().match(keyword) ||
+                 item.description.toLowerCase().match(keyword);
         }
       });
     },
@@ -196,7 +200,6 @@ new Vue({
 
     search: _.debounce(
       function () {
-        console.log(this.keyword);
         this.fixedKeyword = this.keyword;
       },
       500
