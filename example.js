@@ -3,11 +3,6 @@ var googlehome = require('./google-home-notifier');
 var ngrok = require('ngrok');
 var bodyParser = require('body-parser');
 
-var GoogleSpreadsheet = require('google-spreadsheet');
-var ngrokUrlSheet = new GoogleSpreadsheet(process.env.SPREAD_KEY); //コピーしたスプレッドシートのKey
-var credentials = require('./GoogleHome.json'); //作成した認証キーへのパス
-var storage = require('./jsonfile-storage');
-
 var path = require('path');
 var app = express();
 var server = require('http').createServer(app);
@@ -37,6 +32,7 @@ var language = 'ja'; // default language code
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
+var storage = require('./jsonfile-storage');
 var backspace = require('./backspace-rss');
 var rebuild = require('./rebuild-rss');
 
@@ -56,13 +52,34 @@ rebuild.setHandlers({
 rebuild.getRss();
 rebuild.startCron();
 
-var sheet;
-ngrokUrlSheet.useServiceAccountAuth(credentials, function(err){
-  ngrokUrlSheet.getInfo(function(err, data){
-    sheet = data.worksheets[0];
-    init_app();
+if (process.env.SPREAD_KEY){
+  var GoogleSpreadsheet = require('google-spreadsheet');
+  var ngrokUrlSheet = new GoogleSpreadsheet(process.env.SPREAD_KEY); //コピーしたスプレッドシートのKey
+  var credentials = require('./GoogleHome.json'); //作成した認証キーへのパス
+
+  var sheet;
+  ngrokUrlSheet.useServiceAccountAuth(credentials, function(err){
+    ngrokUrlSheet.getInfo(function(err, data){
+      init_app().then(function(url){
+        sheet = data.worksheets[0];
+        sheet.getCells({
+          'min-row': 1,
+          'max-row': 1,
+          'min-col': 1,
+          'max-col': 1,
+          'return-empty': true
+        }, function(error, cells) {
+          var cell = cells[0];
+          cell.value = url;
+          cell.save();
+          console.log('spread sheet update successful!!');
+        });
+      });
+    });
   });
-});
+}else{
+  init_app();
+}
 
 function init_app(){
   app.post('/google-home-notifier', urlencodedParser, function (req, res) {
@@ -201,37 +218,28 @@ function init_app(){
     notifyToGoogleHome(req.query.url, ip, language, res);
   });
 
-  server.listen(serverPort, function (err) {
-    if (err) console.log(err);
-    ngrok.connect(serverPort, function (err, url) {
+  return new Promise(function(resolve, reject){
+    server.listen(serverPort, function (err) {
       if (err) console.log(err);
+      ngrok.connect(serverPort, function (err, url) {
+        if (err) console.log(err);
 
-      console.log('Endpoints:');
-      console.log('    http://' + ip + ':' + serverPort + '/google-home-notifier');
-      console.log('    ' + url + '/google-home-notifier');
-      console.log('GET example:');
-      console.log('curl -X GET ' + url + '/google-home-notifier?text=Hello+Google+Home');
-      console.log('curl -X GET ' + url + '/google-home-backspace-latest');
-      console.log('curl -X GET ' + url + '/google-home-backspace-random');
-      console.log('curl -X GET ' + url + '/google-home-backspace-update');
-      console.log('curl -X GET ' + url + '/google-home-rebuild-latest');
-      console.log('curl -X GET ' + url + '/google-home-rebuild-random');
-      console.log('curl -X GET ' + url + '/google-home-rebuild-update');
-      console.log('curl -X GET ' + url + '/podcast-data');
-      console.log('POST example:');
-      console.log('curl -X POST -d "text=Hello Google Home" ' + url + '/google-home-notifier');
+        console.log('Endpoints:');
+        console.log('    http://' + ip + ':' + serverPort + '/google-home-notifier');
+        console.log('    ' + url + '/google-home-notifier');
+        console.log('GET example:');
+        console.log('curl -X GET ' + url + '/google-home-notifier?text=Hello+Google+Home');
+        console.log('curl -X GET ' + url + '/google-home-backspace-latest');
+        console.log('curl -X GET ' + url + '/google-home-backspace-random');
+        console.log('curl -X GET ' + url + '/google-home-backspace-update');
+        console.log('curl -X GET ' + url + '/google-home-rebuild-latest');
+        console.log('curl -X GET ' + url + '/google-home-rebuild-random');
+        console.log('curl -X GET ' + url + '/google-home-rebuild-update');
+        console.log('curl -X GET ' + url + '/podcast-data');
+        console.log('POST example:');
+        console.log('curl -X POST -d "text=Hello Google Home" ' + url + '/google-home-notifier');
 
-      sheet.getCells({
-        'min-row': 1,
-        'max-row': 1,
-        'min-col': 1,
-        'max-col': 1,
-        'return-empty': true
-      }, function(error, cells) {
-        var cell = cells[0];
-        cell.value = url;
-        cell.save();
-        console.log('spread sheet update successful!!');
+        resolve(url);
       });
     });
   });
