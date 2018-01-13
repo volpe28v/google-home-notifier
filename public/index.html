@@ -39,7 +39,7 @@
      </div>
       <div class="body">
         <div class="row row-left">
-          <ul>
+          <ul class="abstract-ul">
             <li class="abstract">Rebuild.fm
               - 
               <span class="noplay-count">{{abstract.rebuild.noplay}}</span>
@@ -50,8 +50,8 @@
                 {{showRemain(abstract.rebuild)}} / {{showTotal(abstract.rebuild)}}
               </span>
             </li>
-
-
+          </ul>
+          <ul class="item-ul">
             <li class="item" :class="itemClass(item)" v-for="item in rebuildList" v-on:click="play(item)">
               {{item.title}}
               <span class="item-time">
@@ -62,18 +62,19 @@
         </div>
 
         <div class="row">
-         <ul>
-           <li class="abstract">Backspace.fm
-             -  
-             <span class="noplay-count">{{abstract.backspace.noplay}}</span> 
-             <span class="during-count">{{abstract.backspace.during}}</span> 
-             <span class="complete-count">{{abstract.backspace.complete}}</span> 
+          <ul class="abstract-ul">
+            <li class="abstract">Backspace.fm
+              -  
+              <span class="noplay-count">{{abstract.backspace.noplay}}</span> 
+              <span class="during-count">{{abstract.backspace.during}}</span> 
+              <span class="complete-count">{{abstract.backspace.complete}}</span> 
 
-             <span class="abstract-time">
-               {{showRemain(abstract.backspace)}} / {{showTotal(abstract.backspace)}}
-             </span>
-           </li>
-
+              <span class="abstract-time">
+                {{showRemain(abstract.backspace)}} / {{showTotal(abstract.backspace)}}
+              </span>
+            </li>
+          </ul>
+          <ul class="item-ul">
             <li class="item" :class="itemClass(item)" v-for="item in backspaceList" v-on:click="play(item)">
               {{item.title}}
               <span class="item-time">

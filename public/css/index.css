@@ -55,14 +55,17 @@ html,body {
   margin: 38px 1px 1px 1px;
 }
 
+.abstract-ul {
+  margin: 0px;
+}
+
 .abstract {
   font-size: 14px;
   color: rgb(202, 202, 202);
 
   overflow: hidden;
-  margin-bottom: 4px;
-  padding: 4px 8px;
-
+  margin-bottom: 2px;
+  padding: 0px 8px;
 }
 
 .abstract-time {
@@ -100,9 +103,16 @@ html,body {
 
 .row {
   flex: 1;
+  display: flex;
   font-size: 12px;
+  flex-direction: column;
+}
+
+.item-ul {
+  flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  margin: 0px;
 }
 
 .row-left {
