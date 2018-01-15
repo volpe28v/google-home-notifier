@@ -25,18 +25,18 @@
             Not Playing
           </span>
           <span class="search">
-            <input v-model.trim="keyword" placeholder="keyword"/>
+            <input class="keyword" v-model.trim="keyword" placeholder="keyword"/>
           </span>
         </div>
         <div class="header-mobile">
           <span v-if="current_item.title != ''">
             {{showDate(current_item)}} - {{showRemain(current_item)}} / {{showTotal(current_item)}}
           </span>
-          <input v-model.trim="keyword" placeholder="keyword"/>
+          <span class="search-mobile">
+            <input class="keyword" v-model.trim="keyword" placeholder="keyword"/>
+          </span>
         </div>
       </div>
-      <div class="header2">
-     </div>
       <div class="body">
         <div class="row row-left">
           <ul class="abstract-ul">

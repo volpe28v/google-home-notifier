@@ -32,6 +32,11 @@ html,body {
 
 .header-mobile {
   display: none;
+  margin-left: 10px;
+}
+
+.search-mobile {
+  float: right;
 }
 
 .playing a:hover{
@@ -47,6 +52,12 @@ html,body {
 .search {
   float: right;
   margin-right: 15px;
+}
+
+.keyword {
+  background: #333;
+  border-color: #888;
+  color: white;
 }
 
 .body {
@@ -161,7 +172,6 @@ html,body {
 
   .header-mobile {
     display: block;
-    float: right;
     margin-right: 12px;
   }
 
