@@ -52,6 +52,16 @@ rebuild.setHandlers({
 rebuild.getRss();
 rebuild.startCron();
 
+var english_podcast = [];
+english_podcast.push(require('./cnn-rss'));
+english_podcast.push(require('./cbs-rss'));
+//english_podcast.push(require('./pbs-rss'));  //レスポンス悪いので一旦コメント
+
+english_podcast.forEach(function(ep){
+  ep.getRss();
+  ep.startCron();
+});
+
 if (process.env.SPREAD_KEY){
   var GoogleSpreadsheet = require('google-spreadsheet');
   var ngrokUrlSheet = new GoogleSpreadsheet(process.env.SPREAD_KEY); //コピーしたスプレッドシートのKey
@@ -164,6 +174,23 @@ function init_app(){
     });
   });
 
+  app.get('/google-home-english-latest', function (req, res) {
+    var randomItems = english_podcast.concat();
+
+    // ランダムソート
+    for(var i = randomItems.length - 1; i > 0; i--){
+      var r = Math.floor(Math.random() * (i + 1));
+      var tmp = randomItems[i];
+      randomItems[i] = randomItems[r];
+      randomItems[r] = tmp;
+    }
+ 
+    randomItems[0].getLatestUrl().then(function(url){
+      console.log(url);
+      notifyToGoogleHome(url, ip, language, res);
+    });
+  });
+
 
   function notifyToGoogleHome(text, ip, language, res){
     googlehome.ip(ip, language);
@@ -235,6 +262,7 @@ function init_app(){
         console.log('curl -X GET ' + url + '/google-home-rebuild-latest');
         console.log('curl -X GET ' + url + '/google-home-rebuild-random');
         console.log('curl -X GET ' + url + '/google-home-rebuild-update');
+        console.log('curl -X GET ' + url + '/google-home-english-latest');
         console.log('curl -X GET ' + url + '/podcast-data');
         console.log('POST example:');
         console.log('curl -X POST -d "text=Hello Google Home" ' + url + '/google-home-notifier');
