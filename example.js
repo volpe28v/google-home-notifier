@@ -14,12 +14,31 @@ io.sockets.on('connection', function(client) {
 });
 
 function updatePodcastData(client){
-  var data = {};
-  data.rebuild = rebuild.getProgress();
-  data.backspace = backspace.getProgress();
-  client.emit('data', data);
-}
+  var podcastList = [];
+  podcastList.push({
+    title: "Rebuild.fm",
+    items: rebuild.getProgress()
+  });
 
+  podcastList.push({
+    title: "Backspace.fm",
+    items: backspace.getProgress()
+  });
+
+  /*
+  podcastList.push({
+    title: "CNN",
+    items: english_podcast[0].getProgress()
+  });
+
+  podcastList.push({
+    title: "CBS",
+    items: english_podcast[1].getProgress()
+  });
+  */
+
+  client.emit('data', podcastList);
+}
 
 const serverPort = 8091; // default port
 app.use(express.static(path.join(__dirname, 'public')));

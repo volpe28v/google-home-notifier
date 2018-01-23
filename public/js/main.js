@@ -27,27 +27,7 @@ new Vue({
         time: 0,
         duration: 0,
       },
-      data: {
-        rebuild: [],
-        backspace: []
-      },
-      abstract: {
-        rebuild: {
-          noplay: 0,
-          during: 0,
-          complete: 0,
-          time: 0,
-          duration: 0,
-        },
-        backspace: {
-          noplay: 0,
-          during: 0,
-          complete: 0,
-          time: 0,
-          duration: 0,
-        }
-      },
- 
+      podcastList: [],
     }
   },
 
@@ -55,33 +35,24 @@ new Vue({
     var self = this;
 
     socket.on("data", function(data){
-      self.data = data;
-      self.abstract.rebuild = self.getAbstract(self.data.rebuild);
-      self.abstract.backspace = self.getAbstract(self.data.backspace);
+      self.podcastList = data;
+      self.podcastList.forEach(function(podcast){
+        podcast.abstract = self.getAbstract(podcast.items);
+      });
     });
 
     socket.on("progress", function(data){
-      // rebuild
-      var rebuild_found = self.data.rebuild.filter(function(item){
-        return item.url === data.url;
-      })[0];
-      if (rebuild_found){
-        rebuild_found.time = data.time;
-        self.current_item = rebuild_found;
-      }
-      self.abstract.rebuild = self.getAbstract(self.data.rebuild);
-
-      // backspace
-      var backspace_found = self.data.backspace.filter(function(item){
-        return item.url === data.url;
-      })[0];
-      if (backspace_found){
-        backspace_found.time = data.time;
-        self.current_item = backspace_found;
-      }
-      self.abstract.backspace = self.getAbstract(self.data.backspace);
+      self.podcastList.forEach(function(podcast){
+        var found_item = podcast.items.filter(function(item){
+          return item.url === data.url;
+        })[0];
+        if (found_item){
+          found_item.time = data.time;
+          self.current_item = found_item;
+        }
+        podcast.abstract = self.getAbstract(podcast.items);
+      });
     });
-
   },
 
   watch: {
@@ -94,27 +65,24 @@ new Vue({
   },
 
   computed: {
-    rebuildList: function(){
+    filteredList: function(){
       var self = this;
       var keyword = self.fixedKeyword.toLowerCase();
-      return this.data.rebuild.filter(function(item){
-        if (self.fixedKeyword == ""){
-          return true;
-        }else{
-          return item.title.toLowerCase().match(keyword) ||
-                 item.description.toLowerCase().match(keyword);
-        }
-      });
-    },
-    backspaceList: function(){
-      var self = this;
-      var keyword = self.fixedKeyword.toLowerCase();
-      return this.data.backspace.filter(function(item){
-        if (self.fixedKeyword == ""){
-          return true;
-        }else{
-          return item.title.toLowerCase().match(keyword) ||
-                 item.description.toLowerCase().match(keyword);
+
+      return self.podcastList.map(function(podcast){
+        var filteredItems = podcast.items.filter(function(item){
+          if (self.fixedKeyword == ""){
+            return true;
+          }else{
+            return item.title.toLowerCase().match(keyword) ||
+              item.description.toLowerCase().match(keyword);
+          }
+        });
+
+        return {
+          title: podcast.title,
+          abstract: self.getAbstract(filteredItems),
+          items: filteredItems
         }
       });
     },
