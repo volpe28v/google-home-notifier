@@ -18,6 +18,10 @@ html,body {
   text-decoration:none;
 }
 
+.loading {
+  padding: 5px 10px 0px 10px;
+}
+
 .header {
   height: 30px;
   width: 100%;

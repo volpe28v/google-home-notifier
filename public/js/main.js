@@ -18,6 +18,7 @@ new Vue({
   el: '#app',
   data: function(){
     return {
+      loading: true,
       message: "",
       keyword: "",
       fixedKeyword: "",
@@ -39,6 +40,8 @@ new Vue({
       self.podcastList.forEach(function(podcast){
         podcast.abstract = self.getAbstract(podcast.items);
       });
+
+      self.loading = false;
     });
 
     socket.on("progress", function(data){

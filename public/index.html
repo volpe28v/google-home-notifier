@@ -10,53 +10,42 @@
   </head>
   <body>
     <div id="app">
-      <div class="header">
+      <div v-if="loading" class="loading">Loading...</div>
+      <div v-if="!loading" class="header">
         <div class="header-inner1">
           <span class="playing" v-if="current_item.title != ''">
-            Playing 
-            <a :href="current_item.link" target="_blank">
-              {{current_item.title}}
+            <span v-text='"Playing"'></span> 
+            <a :href="current_item.link" target="_blank" v-text='current_item.title'>
             </a>
-            <span class="header-time">
-            - {{showDate(current_item)}} - {{showRemain(current_item)}} / {{showTotal(current_item)}}
-            </span>
+            <span class="header-time" v-text='"- " + showDate(current_item) + " - " + showRemain(current_item) + " / " + showTotal(current_item)'></span>
           </span>
-          <span class="playing" v-else>
-            Not Playing
-          </span>
+          <span class="playing" v-else v-text='"Not Playing"'></span>
           <span class="search">
             <input class="keyword" v-model.trim="keyword" placeholder="keyword"/>
           </span>
         </div>
         <div class="header-mobile">
-          <span v-if="current_item.title != ''">
-            {{showDate(current_item)}} - {{showRemain(current_item)}} / {{showTotal(current_item)}}
-          </span>
+          <span v-if="current_item.title != ''" v-text='showDate(current_item) + " - " + showRemain(current_item) + " / " + showTotal(current_item)'></span>
           <span class="search-mobile">
             <input class="keyword" v-model.trim="keyword" placeholder="keyword"/>
           </span>
         </div>
       </div>
-      <div class="body">
+      <div v-if="!loading" class="body">
         <div class="row row-left" v-for="podcast in filteredList" >
           <ul class="abstract-ul">
-            <li class="abstract">{{podcast.title}}
-              - 
-              <span class="noplay-count">{{podcast.abstract.noplay}}</span>
-              <span class="during-count">{{podcast.abstract.during}}</span>
-              <span class="complete-count">{{podcast.abstract.complete}}</span>
+            <li class="abstract"><span v-text='podcast.title + " - "'></span>
+              <span class="noplay-count" v-text='podcast.abstract.noplay'></span>
+              <span class="during-count" v-text='podcast.abstract.during'></span>
+              <span class="complete-count" v-text='podcast.abstract.complete'></span>
 
-              <span class="abstract-time">
-                {{showRemain(podcast.abstract)}} / {{showTotal(podcast.abstract)}}
-              </span>
+              <span class="abstract-time" v-text='showRemain(podcast.abstract) + " / " + showTotal(podcast.abstract)'></span>
             </li>
           </ul>
           <ul class="item-ul">
             <li class="item" :class="itemClass(item)" v-for="item in podcast.items" v-on:click="play(item)">
-              {{item.title}}
-              <span class="item-time">
-                {{showRemain(item)}} / {{showTotal(item)}}
-              </span>
+              <span v-text='item.title'></span>
+              <span class="item-time" v-text='showRemain(item) + " / " + showTotal(item)'></span>
             </li>
           </ul>
         </div>
