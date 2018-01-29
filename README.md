@@ -13,8 +13,8 @@ $ SPREAD_KEY=<SpreadSheetKey> GOOGLEHOME_IP=<GoogleHomeIP> node example.js
 ## Progress page
 access to http://localhost:8091/
 
-
-
+## 参考
+* [Google Home で Rebuild.fm や Backspace.fm を流す方法](https://qiita.com/volpe28v/items/f2e4a88c66e6af1009a2)
 
 ---
 # google-home-notifier
