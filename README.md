@@ -13,6 +13,8 @@ $ SPREAD_KEY=<SpreadSheetKey> GOOGLEHOME_IP=<GoogleHomeIP> node example.js
 ## Progress page
 access to http://localhost:8091/
 
+<img width="1213" alt="2018-02-01 0 54 29" src="https://user-images.githubusercontent.com/754962/35632648-8dda7a74-06ea-11e8-9859-8352371879ba.png">
+
 ## 参考
 * [Google Home で Rebuild.fm や Backspace.fm を流す方法](https://qiita.com/volpe28v/items/f2e4a88c66e6af1009a2)
 
