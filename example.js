@@ -46,8 +46,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 var deviceName = 'Google Home';
-var ip = process.env.GOOGLEHOME_IP; // default IP
+var ip = process.env.GOOGLEHOME_IP;
 var language = 'ja'; // default language code
+
+var audio_ip = process.env.AUDIO_IP;
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
@@ -122,7 +124,7 @@ function init_app(){
     }
 
     if (req.query.language) {
-      language;
+      language = req.query.language;
     }
 
     notifyToGoogleHome(text, ip, language, res);
@@ -138,7 +140,7 @@ function init_app(){
     }
 
     if (req.query.language) {
-      language;
+      language = req.query.language;
     }
 
     notifyToGoogleHome(text, ip, language, res);
@@ -210,7 +212,17 @@ function init_app(){
     });
   });
 
-
+  // オーディオ再生機能
+  app.get('/google-home-audio', function (req, res) {
+    if (audio_ip){
+      console.log(req.query);
+      var mp3_file = req.query.mp3.trim();
+      notifyToGoogleHome('http://' + audio_ip + '/' + mp3_file, ip, language, res);
+    }else{
+      console.log('undefined env AUDIO_IP');
+    }
+  });
+  
   function notifyToGoogleHome(text, ip, language, res){
     googlehome.ip(ip, language);
     googlehome.device(deviceName,language)
