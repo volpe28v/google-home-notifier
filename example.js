@@ -119,13 +119,19 @@ function init_app(){
 
     var text = req.body.text;
 
-    if (req.query.ip) {
-      ip = req.query.ip;
+    if (req.body.ip) {
+      ip = req.body.ip;
     }
 
-    if (req.query.language) {
-      language = req.query.language;
+    var isJapanese = false;
+    for (var i = 0; i < text.length; ++i) {
+      if (text.charCodeAt(i) >= 256) {
+        isJapanese = true;
+        break;
+      }
     }
+
+    const language = isJapanese ? 'ja' : 'en';
 
     notifyToGoogleHome(text, ip, language, res);
   });
