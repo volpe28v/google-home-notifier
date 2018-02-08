@@ -33,25 +33,30 @@ function RssReader(url){
       request.get({
         url: self.url
       }, function(error, reaponse, body){
-        var json = parser.toJson(body);
+        try{
+          var json = parser.toJson(body);
 
-        self.items = JSON.parse(json).rss.channel.item.map(function(item){
-          return {
-            date: moment(item.pubDate),
+          self.items = JSON.parse(json).rss.channel.item.map(function(item){
+            return {
+              date: moment(item.pubDate),
             title: item.title,
             link: item.link,
             url: item.enclosure.url,
             duration: toSeconds(item["itunes:duration"]),
             description: item.description
-          };
-        });
+            };
+          });
 
-        //console.log(self.items);
-        console.log(self.url + " " + self.items.length + " episodes.");
-        console.log("\tlatest " + self.getLatestUrl());
-        
-        self.handlers.onUpdated();
-        resolve();
+          //console.log(self.items);
+          console.log(self.url + " " + self.items.length + " episodes.");
+          console.log("\tlatest " + self.getLatestUrl());
+
+          self.handlers.onUpdated();
+          resolve();
+        }catch(e) {
+          console.log(e);
+          reject();
+        }
       });
     });
   }
