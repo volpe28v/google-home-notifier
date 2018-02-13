@@ -166,6 +166,13 @@ function init_app(){
     notifyToGoogleHome(url, ip, language, res);
   });
 
+  app.get('/google-home-backspace-resume', function (req, res) {
+    var url = backspace.getResumeUrl();
+    console.log(url);
+
+    notifyToGoogleHome(url, ip, language, res);
+  });
+
   app.get('/google-home-backspace-update', function (req, res) {
     backspace.getRss().then(function(result){
       return backspace.getLatestUrl();
@@ -190,6 +197,14 @@ function init_app(){
 
     notifyToGoogleHome(url, ip, language, res);
   });
+
+  app.get('/google-home-rebuild-resume', function (req, res) {
+    var url = rebuild.getResumeUrl();
+    console.log(url);
+
+    notifyToGoogleHome(url, ip, language, res);
+  });
+
 
   app.get('/google-home-rebuild-update', function (req, res) {
     rebuild.getRss().then(function(result){

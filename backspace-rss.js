@@ -3,6 +3,7 @@ var RssReader = require('./rss-reader');
 var RssUrl = 'http://feeds.backspace.fm/backspacefm';
 
 var rssReader = new RssReader(RssUrl);
+var resumeUrl = null;
 
 module.exports.setHandlers = function(handlers){
   rssReader.setHandlers(handlers);
@@ -19,12 +20,17 @@ module.exports.getRss = function(){
 
 module.exports.getLatestUrl = function(){
   return new Promise(function(resolve, reject){
-    resolve(rssReader.getLatestUrl());
+    resumeUrl = rssReader.getLatestUrl();
+    resolve(resumeUrl);
   });
 }
 
 module.exports.getRandomUrl = function(){
-  return rssReader.getRandomUrl();
+  return resumeUrl = rssReader.getRandomUrl();
+}
+
+module.exports.getResumeUrl = function(){
+  return resumeUrl;
 }
 
 module.exports.getProgress = function(){
