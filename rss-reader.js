@@ -9,6 +9,7 @@ function RssReader(url){
   var self = this;
 
   this.url = url;
+  this.resumeUrl = null;
   this.items = [];
   this.handlers = {
     onUpdated: function(){}
@@ -49,7 +50,6 @@ function RssReader(url){
 
           //console.log(self.items);
           console.log(self.url + " " + self.items.length + " episodes.");
-          console.log("\tlatest " + self.getLatestUrl());
 
           self.handlers.onUpdated();
           resolve();
@@ -69,7 +69,7 @@ function RssReader(url){
     // 未再生の最新を検索する
     for (var i = 0; i < self.items.length; i++){
       if (!storage.isFinished(self.items[i].url)){
-        return self.items[i].url;
+        return self.resumeUrl = self.items[i].url;
       }
     }
     return null;
@@ -93,7 +93,7 @@ function RssReader(url){
     // 未再生を検索
     for (var i = 0; i < randomItems.length; i++){
       if (!storage.isFinished(randomItems[i].url)){
-        return randomItems[i].url;
+        return self.resumeUrl = randomItems[i].url;
       }
     }
 
@@ -106,6 +106,14 @@ function RssReader(url){
     }
 
     return self.items;
+  }
+
+  this.getResumeUrl = function(){
+    if (self.resumeUrl != null && !storage.isFinished(self.resumeUrl)){
+      return self.resumeUrl;
+    }else{
+      return self.getRandomUrl();
+    }
   }
 }
 

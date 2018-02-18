@@ -175,11 +175,9 @@ function init_app(){
 
   app.get('/google-home-backspace-update', function (req, res) {
     backspace.getRss().then(function(result){
-      return backspace.getLatestUrl();
-    }).then(function(url){
-      console.log("updated backspace.fm : " + url);
+      console.log("updated backspace.fm ");
       updatePodcastData(io.sockets);
-      res.send("updated backspace.fm : " + url + '\n');
+      res.send("updated backspace.fm ");
     });
   });
 
@@ -208,11 +206,9 @@ function init_app(){
 
   app.get('/google-home-rebuild-update', function (req, res) {
     rebuild.getRss().then(function(result){
-      return rebuild.getLatestUrl();
-    }).then(function(url){
-      console.log("updated rebuild.fm : " + url);
+      console.log("updated rebuild.fm ");
       updatePodcastData(io.sockets);
-      res.send("updated rebuild.fm : " + url + '\n');
+      res.send("updated rebuild.fm ");
     });
   });
 
