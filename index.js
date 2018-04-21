@@ -1,6 +1,5 @@
 var express = require('express');
 var googlehome = require('./google-home-notifier');
-var ngrok = require('ngrok');
 var bodyParser = require('body-parser');
 
 var path = require('path');
@@ -296,27 +295,25 @@ function init_app(){
   return new Promise(function(resolve, reject){
     server.listen(serverPort, function (err) {
       if (err) console.log(err);
-      ngrok.connect(serverPort, function (err, url) {
-        if (err) console.log(err);
+      var url = "http://localhost";
 
-        console.log('Endpoints:');
-        console.log('    http://' + ip + ':' + serverPort + '/google-home-notifier');
-        console.log('    ' + url + '/google-home-notifier');
-        console.log('GET example:');
-        console.log('curl -X GET ' + url + '/google-home-notifier?text=Hello+Google+Home');
-        console.log('curl -X GET ' + url + '/google-home-backspace-latest');
-        console.log('curl -X GET ' + url + '/google-home-backspace-random');
-        console.log('curl -X GET ' + url + '/google-home-backspace-update');
-        console.log('curl -X GET ' + url + '/google-home-rebuild-latest');
-        console.log('curl -X GET ' + url + '/google-home-rebuild-random');
-        console.log('curl -X GET ' + url + '/google-home-rebuild-update');
-        console.log('curl -X GET ' + url + '/google-home-english-latest');
-        console.log('curl -X GET ' + url + '/podcast-data');
-        console.log('POST example:');
-        console.log('curl -X POST -d "text=Hello Google Home" ' + url + '/google-home-notifier');
+      console.log('Endpoints:');
+      console.log('    http://' + ip + ':' + serverPort + '/google-home-notifier');
+      console.log('    ' + url + '/google-home-notifier');
+      console.log('GET example:');
+      console.log('curl -X GET ' + url + '/google-home-notifier?text=Hello+Google+Home');
+      console.log('curl -X GET ' + url + '/google-home-backspace-latest');
+      console.log('curl -X GET ' + url + '/google-home-backspace-random');
+      console.log('curl -X GET ' + url + '/google-home-backspace-update');
+      console.log('curl -X GET ' + url + '/google-home-rebuild-latest');
+      console.log('curl -X GET ' + url + '/google-home-rebuild-random');
+      console.log('curl -X GET ' + url + '/google-home-rebuild-update');
+      console.log('curl -X GET ' + url + '/google-home-english-latest');
+      console.log('curl -X GET ' + url + '/podcast-data');
+      console.log('POST example:');
+      console.log('curl -X POST -d "text=Hello Google Home" ' + url + '/google-home-notifier');
 
-        resolve(url);
-      });
+      resolve(url);
     });
   });
 }
