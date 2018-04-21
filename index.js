@@ -12,33 +12,6 @@ io.sockets.on('connection', function(client) {
   updatePodcastData(client);
 });
 
-function updatePodcastData(client){
-  var podcastList = [];
-  podcastList.push({
-    title: "Rebuild.fm",
-    items: rebuild.getProgress()
-  });
-
-  podcastList.push({
-    title: "Backspace.fm",
-    items: backspace.getProgress()
-  });
-
-  /*
-  podcastList.push({
-    title: "CNN",
-    items: english_podcast[0].getProgress()
-  });
-
-  podcastList.push({
-    title: "CBS",
-    items: english_podcast[1].getProgress()
-  });
-  */
-
-  client.emit('data', podcastList);
-}
-
 const serverPort = 8091; // default port
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -52,35 +25,39 @@ var audio_ip = process.env.AUDIO_IP;
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
+var RssReader = require('./lib/rss-reader');
 var storage = require('./lib/jsonfile-storage');
-var backspace = require('./rss/backspace-rss');
-var rebuild = require('./rss/rebuild-rss');
+var jsonfile = require('jsonfile');
 
-backspace.setHandlers({
-  onUpdated: function(){
-    updatePodcastData(io.sockets);
-  }
+var podcastJson= jsonfile.readFileSync('./podcast-list.json', {
+  encoding: 'utf-8',
+  reviver: null,
+  throws: true
 });
-backspace.getRss();
-backspace.startCron();
 
-rebuild.setHandlers({
-  onUpdated: function(){
-    updatePodcastData(io.sockets);
-  }
+var rssReaderList = podcastJson.map(function(p){
+  var reader = new RssReader(p);
+  reader.setHandlers({
+    onUpdated: function(){
+      updatePodcastData(io.sockets);
+    }
+  });
+  reader.getRss();
+  reader.startCron("0 0 0 * * *");
+  return reader;
 });
-rebuild.getRss();
-rebuild.startCron();
 
-var english_podcast = [];
-english_podcast.push(require('./rss/cnn-rss'));
-english_podcast.push(require('./rss/cbs-rss'));
-//english_podcast.push(require('./rss/pbs-rss'));  //レスポンス悪いので一旦コメント
-
-english_podcast.forEach(function(ep){
-  ep.getRss();
-  ep.startCron();
-});
+function updatePodcastData(client){
+  client.emit(
+    'data',
+    rssReaderList.map(function(rr){
+      return {
+        title: rr.title,
+        items: rr.getProgress()
+      }
+    })
+  );
+}
 
 init_app();
 
@@ -125,6 +102,10 @@ function init_app(){
   });
 
   app.get('/google-home-backspace-latest', function (req, res) {
+    var backspace = rssReaderList.filter(function(rr){
+      return rr.title == "Backspace.fm";
+    })[0];
+
     backspace.getLatestUrl().then(function(url){
       console.log(url);
       notifyToGoogleHome(url, ip, language, res);
@@ -132,6 +113,10 @@ function init_app(){
   });
 
   app.get('/google-home-backspace-random', function (req, res) {
+    var backspace = rssReaderList.filter(function(rr){
+      return rr.title == "Backspace.fm";
+    })[0];
+
     var url = backspace.getRandomUrl();
     console.log(url);
 
@@ -139,6 +124,10 @@ function init_app(){
   });
 
   app.get('/google-home-backspace-resume', function (req, res) {
+    var backspace = rssReaderList.filter(function(rr){
+      return rr.title == "Backspace.fm";
+    })[0];
+
     var url = backspace.getResumeUrl();
     console.log(url);
 
@@ -146,6 +135,10 @@ function init_app(){
   });
 
   app.get('/google-home-backspace-update', function (req, res) {
+    var backspace = rssReaderList.filter(function(rr){
+      return rr.title == "Backspace.fm";
+    })[0];
+
     backspace.getRss().then(function(result){
       console.log("updated backspace.fm ");
       updatePodcastData(io.sockets);
@@ -155,6 +148,10 @@ function init_app(){
 
 
   app.get('/google-home-rebuild-latest', function (req, res) {
+    var rebuild = rssReaderList.filter(function(rr){
+      return rr.title == "Rebuild.fm";
+    })[0];
+
     rebuild.getLatestUrl().then(function(url){
       console.log(url);
       notifyToGoogleHome(url, ip, language, res);
@@ -162,6 +159,10 @@ function init_app(){
   });
 
   app.get('/google-home-rebuild-random', function (req, res) {
+    var rebuild = rssReaderList.filter(function(rr){
+      return rr.title == "Rebuild.fm";
+    })[0];
+
     var url = rebuild.getRandomUrl();
     console.log(url);
 
@@ -169,6 +170,10 @@ function init_app(){
   });
 
   app.get('/google-home-rebuild-resume', function (req, res) {
+    var rebuild = rssReaderList.filter(function(rr){
+      return rr.title == "Rebuild.fm";
+    })[0];
+
     var url = rebuild.getResumeUrl();
     console.log(url);
 
@@ -177,6 +182,10 @@ function init_app(){
 
 
   app.get('/google-home-rebuild-update', function (req, res) {
+    var rebuild = rssReaderList.filter(function(rr){
+      return rr.title == "Rebuild.fm";
+    })[0];
+
     rebuild.getRss().then(function(result){
       console.log("updated rebuild.fm ");
       updatePodcastData(io.sockets);
@@ -185,7 +194,9 @@ function init_app(){
   });
 
   app.get('/google-home-english-latest', function (req, res) {
-    var randomItems = english_podcast.concat();
+    var randomItems = rssReaderList.filter(function(rr){
+      return rr.title == "CBS" || rr.title == "PBS";
+    });
 
     // ランダムソート
     for(var i = randomItems.length - 1; i > 0; i--){

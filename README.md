@@ -7,7 +7,7 @@ Play rebuild.fm and backspace.fm on Google Home.
 ## Installation
 ```
 $ npm install
-$ SPREAD_KEY=<SpreadSheetKey> GOOGLEHOME_IP=<GoogleHomeIP> node example.js
+$ GOOGLEHOME_IP=<GoogleHomeIP> node index.js
 ```
 
 ## Progress page

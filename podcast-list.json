@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Rebuild.fm",
+    "url":   "http://feeds.rebuild.fm/rebuildfm"
+  },
+  {
+    "title": "Backspace.fm",
+    "url":   "http://feeds.backspace.fm/backspacefm"
+  },
+  {
+    "title": "CBS",
+    "url":   "http://cbsradionewsfeed.com/rss.php?id=149&ud=12"
+  },
+  {
+    "title": "PBS",
+    "url":  "https://www.pbs.org/newshour/feeds/rss/podcasts/show"
+  }
+]
