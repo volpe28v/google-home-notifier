@@ -3,7 +3,7 @@ var CronJob = require('cron').CronJob;
 var parser = require('xml2json');
 var jsonfile = require('jsonfile');
 var moment = require('moment');
-var storage = require('./jsonfile-storage');
+var storage = require('../lib/jsonfile-storage');
 
 function RssReader(url){
   var self = this;

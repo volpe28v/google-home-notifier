@@ -1,5 +1,5 @@
 var express = require('express');
-var googlehome = require('./google-home-notifier');
+var googlehome = require('./lib/google-home-notifier');
 var bodyParser = require('body-parser');
 
 var path = require('path');
@@ -52,9 +52,9 @@ var audio_ip = process.env.AUDIO_IP;
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-var storage = require('./jsonfile-storage');
-var backspace = require('./backspace-rss');
-var rebuild = require('./rebuild-rss');
+var storage = require('./lib/jsonfile-storage');
+var backspace = require('./rss/backspace-rss');
+var rebuild = require('./rss/rebuild-rss');
 
 backspace.setHandlers({
   onUpdated: function(){
@@ -73,43 +73,16 @@ rebuild.getRss();
 rebuild.startCron();
 
 var english_podcast = [];
-english_podcast.push(require('./cnn-rss'));
-english_podcast.push(require('./cbs-rss'));
-//english_podcast.push(require('./pbs-rss'));  //レスポンス悪いので一旦コメント
+english_podcast.push(require('./rss/cnn-rss'));
+english_podcast.push(require('./rss/cbs-rss'));
+//english_podcast.push(require('./rss/pbs-rss'));  //レスポンス悪いので一旦コメント
 
 english_podcast.forEach(function(ep){
   ep.getRss();
   ep.startCron();
 });
 
-if (process.env.SPREAD_KEY){
-  var GoogleSpreadsheet = require('google-spreadsheet');
-  var ngrokUrlSheet = new GoogleSpreadsheet(process.env.SPREAD_KEY); //コピーしたスプレッドシートのKey
-  var credentials = require('./GoogleHome.json'); //作成した認証キーへのパス
-
-  var sheet;
-  ngrokUrlSheet.useServiceAccountAuth(credentials, function(err){
-    ngrokUrlSheet.getInfo(function(err, data){
-      init_app().then(function(url){
-        sheet = data.worksheets[0];
-        sheet.getCells({
-          'min-row': 1,
-          'max-row': 1,
-          'min-col': 1,
-          'max-col': 1,
-          'return-empty': true
-        }, function(error, cells) {
-          var cell = cells[0];
-          cell.value = url;
-          cell.save();
-          console.log('spread sheet update successful!!');
-        });
-      });
-    });
-  });
-}else{
-  init_app();
-}
+init_app();
 
 function init_app(){
   app.post('/google-home-notifier', urlencodedParser, function (req, res) {
