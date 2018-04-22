@@ -114,6 +114,8 @@ new Vue({
       var time = 0;
       var duration = 0;
       items.forEach(function(item){
+        if (isNaN(item.duration)) return;
+
         if (item.duration - item.time < 60){
           abst.complete++;
         }else if (item.time > 0){
