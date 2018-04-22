@@ -8,6 +8,14 @@
     "url":   "http://feeds.backspace.fm/backspacefm"
   },
   {
+    "title": "omoiyari.fm",
+    "url":   "http://feeds.lean-agile.fm/omoiyarifm"
+  },
+  {
+    "title": "TuringCompleteFM",
+    "url": "https://feeds.turingcomplete.fm/tcfm"
+  },
+  {
     "title": "CBS",
     "url":   "http://cbsradionewsfeed.com/rss.php?id=149&ud=12"
   },

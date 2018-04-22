@@ -243,9 +243,8 @@ function init_app(){
               console.log(status.media.contentId + " : " + status.currentTime + " / " + status.media.duration + "  残り" + remain + "分");
               storage.setBeforeTime(status.media.contentId, status.currentTime, status.media.duration);
 
+              io.sockets.emit('progress', {url: mp3_url, time: status.currentTime, duration: status.media.duration});
             }
-
-            io.sockets.emit('progress', {url: mp3_url, time: status.currentTime});
           });
         } else {
           googlehome.notify(text, function(notifyRes) {

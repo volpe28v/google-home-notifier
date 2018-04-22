@@ -51,6 +51,7 @@ new Vue({
         })[0];
         if (found_item){
           found_item.time = data.time;
+          found_item.duration = data.duration;
           self.current_item = found_item;
         }
         podcast.abstract = self.getAbstract(podcast.items);
@@ -77,8 +78,8 @@ new Vue({
           if (self.fixedKeyword == ""){
             return true;
           }else{
-            return item.title.toLowerCase().match(keyword) ||
-              item.description.toLowerCase().match(keyword);
+            return item.title.toLowerCase().match(keyword)
+              || (typeof item.description == 'string' ? item.description.toLowerCase().match(keyword) : false);
           }
         });
 
