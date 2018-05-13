@@ -115,6 +115,7 @@ function init_app(){
   });
 
   app.get('/google-home-podcast-random', function (req, res) {
+    var target = req.query.target;
     var podcast = rssReaderList.filter(function(rr){
       return rr.title.toLowerCase() == target.toLowerCase();
     })[0];
@@ -126,6 +127,7 @@ function init_app(){
   });
 
   app.get('/google-home-podcast-resume', function (req, res) {
+    var target = req.query.target;
     var podcast = rssReaderList.filter(function(rr){
       return rr.title.toLowerCase() == target.toLowerCase();
     })[0];
@@ -137,6 +139,7 @@ function init_app(){
   });
 
   app.get('/google-home-podcast-update', function (req, res) {
+    var target = req.query.target;
     var podcast = rssReaderList.filter(function(rr){
       return rr.title.toLowerCase() == target.toLowerCase();
     })[0];
@@ -148,9 +151,10 @@ function init_app(){
     });
   });
 
-  app.get('/google-home-english-latest', function (req, res) {
+  app.get('/google-home-podcast-latest-by-type', function (req, res) {
+    var target = req.query.target;
     var randomItems = rssReaderList.filter(function(rr){
-      return rr.type == "english";
+      return rr.type.toLowerCase() == target.toLowerCase();
     });
 
     // ランダムソート
@@ -162,6 +166,18 @@ function init_app(){
     }
  
     var url = randomItems[0].getLatestUrl();
+    console.log(url);
+
+    notifyToGoogleHome(url, ip, language, res);
+  });
+
+  app.get('/google-home-podcast-random-by-type', function (req, res) {
+    var target = req.query.target;
+    var podcast = rssReaderList.filter(function(rr){
+      return rr.type.toLowerCase() == target.toLowerCase();
+    })[0];
+
+    var url = podcast.getRandomUrl();
     console.log(url);
 
     notifyToGoogleHome(url, ip, language, res);
