@@ -1,26 +1,32 @@
 [
   {
     "title": "Rebuild.fm",
-    "url":   "http://feeds.rebuild.fm/rebuildfm"
+    "url":   "http://feeds.rebuild.fm/rebuildfm",
+    "type":  "tech"
   },
   {
     "title": "Backspace.fm",
-    "url":   "http://feeds.backspace.fm/backspacefm"
+    "url":   "http://feeds.backspace.fm/backspacefm",
+    "type":  "tech"
   },
   {
     "title": "omoiyari.fm",
-    "url":   "http://feeds.lean-agile.fm/omoiyarifm"
+    "url":   "http://feeds.lean-agile.fm/omoiyarifm",
+    "type":  "tech"
   },
   {
     "title": "TuringCompleteFM",
-    "url": "https://feeds.turingcomplete.fm/tcfm"
+    "url":   "https://feeds.turingcomplete.fm/tcfm",
+    "type":  "tech"
   },
   {
     "title": "CBS",
-    "url":   "http://cbsradionewsfeed.com/rss.php?id=149&ud=12"
+    "url":   "http://cbsradionewsfeed.com/rss.php?id=149&ud=12",
+    "type":  "english"
   },
   {
     "title": "PBS",
-    "url":  "https://www.pbs.org/newshour/feeds/rss/podcasts/show"
+    "url":   "https://www.pbs.org/newshour/feeds/rss/podcasts/show",
+    "type":  "english"
   }
 ]

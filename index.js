@@ -101,6 +101,19 @@ function init_app(){
     notifyToGoogleHome(text, ip, language, res);
   });
 
+  app.get('/google-home-podcast-latest', function (req, res) {
+    var target = req.query.target;
+
+    var podcast = rssReaderList.filter(function(rr){
+      return rr.title.toLowerCase() == target.toLowerCase();
+    })[0];
+
+    podcast.getLatestUrl().then(function(url){
+      console.log(url);
+      notifyToGoogleHome(url, ip, language, res);
+    });
+  });
+
   app.get('/google-home-backspace-latest', function (req, res) {
     var backspace = rssReaderList.filter(function(rr){
       return rr.title == "Backspace.fm";
@@ -195,7 +208,7 @@ function init_app(){
 
   app.get('/google-home-english-latest', function (req, res) {
     var randomItems = rssReaderList.filter(function(rr){
-      return rr.title == "CBS" || rr.title == "PBS";
+      return rr.type == "english";
     });
 
     // ランダムソート
@@ -206,10 +219,10 @@ function init_app(){
       randomItems[r] = tmp;
     }
  
-    randomItems[0].getLatestUrl().then(function(url){
-      console.log(url);
-      notifyToGoogleHome(url, ip, language, res);
-    });
+    var url = randomItems[0].getLatestUrl();
+    console.log(url);
+
+    notifyToGoogleHome(url, ip, language, res);
   });
 
   // オーディオ再生機能
