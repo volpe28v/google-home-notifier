@@ -108,10 +108,10 @@ function init_app(){
       return rr.title.toLowerCase() == target.toLowerCase();
     })[0];
 
-    podcast.getLatestUrl().then(function(url){
-      console.log(url);
-      notifyToGoogleHome(url, ip, language, res);
-    });
+    var url = podcast.getLatestUrl();
+    console.log(url);
+
+    notifyToGoogleHome(url, ip, language, res);
   });
 
   app.get('/google-home-backspace-latest', function (req, res) {
@@ -119,10 +119,10 @@ function init_app(){
       return rr.title == "Backspace.fm";
     })[0];
 
-    backspace.getLatestUrl().then(function(url){
-      console.log(url);
-      notifyToGoogleHome(url, ip, language, res);
-    });
+    var url = backspace.getLatestUrl();
+    console.log(url);
+
+    notifyToGoogleHome(url, ip, language, res);
   });
 
   app.get('/google-home-backspace-random', function (req, res) {
@@ -165,10 +165,10 @@ function init_app(){
       return rr.title == "Rebuild.fm";
     })[0];
 
-    rebuild.getLatestUrl().then(function(url){
-      console.log(url);
-      notifyToGoogleHome(url, ip, language, res);
-    });
+    var url = rebuild.getLatestUrl();
+    console.log(url);
+
+    notifyToGoogleHome(url, ip, language, res);
   });
 
   app.get('/google-home-rebuild-random', function (req, res) {
