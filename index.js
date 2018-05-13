@@ -114,95 +114,37 @@ function init_app(){
     notifyToGoogleHome(url, ip, language, res);
   });
 
-  app.get('/google-home-backspace-latest', function (req, res) {
-    var backspace = rssReaderList.filter(function(rr){
-      return rr.title == "Backspace.fm";
+  app.get('/google-home-podcast-random', function (req, res) {
+    var podcast = rssReaderList.filter(function(rr){
+      return rr.title.toLowerCase() == target.toLowerCase();
     })[0];
 
-    var url = backspace.getLatestUrl();
+    var url = podcast.getRandomUrl();
     console.log(url);
 
     notifyToGoogleHome(url, ip, language, res);
   });
 
-  app.get('/google-home-backspace-random', function (req, res) {
-    var backspace = rssReaderList.filter(function(rr){
-      return rr.title == "Backspace.fm";
+  app.get('/google-home-podcast-resume', function (req, res) {
+    var podcast = rssReaderList.filter(function(rr){
+      return rr.title.toLowerCase() == target.toLowerCase();
     })[0];
 
-    var url = backspace.getRandomUrl();
+    var url = podcast.getResumeUrl();
     console.log(url);
 
     notifyToGoogleHome(url, ip, language, res);
   });
 
-  app.get('/google-home-backspace-resume', function (req, res) {
-    var backspace = rssReaderList.filter(function(rr){
-      return rr.title == "Backspace.fm";
+  app.get('/google-home-podcast-update', function (req, res) {
+    var podcast = rssReaderList.filter(function(rr){
+      return rr.title.toLowerCase() == target.toLowerCase();
     })[0];
 
-    var url = backspace.getResumeUrl();
-    console.log(url);
-
-    notifyToGoogleHome(url, ip, language, res);
-  });
-
-  app.get('/google-home-backspace-update', function (req, res) {
-    var backspace = rssReaderList.filter(function(rr){
-      return rr.title == "Backspace.fm";
-    })[0];
-
-    backspace.getRss().then(function(result){
-      console.log("updated backspace.fm ");
+    podcast.getRss().then(function(result){
+      console.log("updated " + target);
       updatePodcastData(io.sockets);
-      res.send("updated backspace.fm ");
-    });
-  });
-
-
-  app.get('/google-home-rebuild-latest', function (req, res) {
-    var rebuild = rssReaderList.filter(function(rr){
-      return rr.title == "Rebuild.fm";
-    })[0];
-
-    var url = rebuild.getLatestUrl();
-    console.log(url);
-
-    notifyToGoogleHome(url, ip, language, res);
-  });
-
-  app.get('/google-home-rebuild-random', function (req, res) {
-    var rebuild = rssReaderList.filter(function(rr){
-      return rr.title == "Rebuild.fm";
-    })[0];
-
-    var url = rebuild.getRandomUrl();
-    console.log(url);
-
-    notifyToGoogleHome(url, ip, language, res);
-  });
-
-  app.get('/google-home-rebuild-resume', function (req, res) {
-    var rebuild = rssReaderList.filter(function(rr){
-      return rr.title == "Rebuild.fm";
-    })[0];
-
-    var url = rebuild.getResumeUrl();
-    console.log(url);
-
-    notifyToGoogleHome(url, ip, language, res);
-  });
-
-
-  app.get('/google-home-rebuild-update', function (req, res) {
-    var rebuild = rssReaderList.filter(function(rr){
-      return rr.title == "Rebuild.fm";
-    })[0];
-
-    rebuild.getRss().then(function(result){
-      console.log("updated rebuild.fm ");
-      updatePodcastData(io.sockets);
-      res.send("updated rebuild.fm ");
+      res.send("updated " + target);
     });
   });
 
