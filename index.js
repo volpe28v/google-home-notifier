@@ -234,14 +234,6 @@ function init_app(){
     }
   }
 
-  app.get('/podcast-data', function (req, res) {
-    var data = {};
-    data.rebuild = rebuild.getProgress();
-    data.backspace = backspace.getProgress();
-    
-    res.send(data);
-  });
-
   app.get('/podcast-play', function (req, res) {
     notifyToGoogleHome(req.query.url, ip, language, res);
   });
@@ -252,18 +244,14 @@ function init_app(){
       var url = "http://localhost";
 
       console.log('Endpoints:');
-      console.log('    http://' + ip + ':' + serverPort + '/google-home-notifier');
       console.log('    ' + url + '/google-home-notifier');
       console.log('GET example:');
       console.log('curl -X GET ' + url + '/google-home-notifier?text=Hello+Google+Home');
-      console.log('curl -X GET ' + url + '/google-home-backspace-latest');
-      console.log('curl -X GET ' + url + '/google-home-backspace-random');
-      console.log('curl -X GET ' + url + '/google-home-backspace-update');
-      console.log('curl -X GET ' + url + '/google-home-rebuild-latest');
-      console.log('curl -X GET ' + url + '/google-home-rebuild-random');
-      console.log('curl -X GET ' + url + '/google-home-rebuild-update');
-      console.log('curl -X GET ' + url + '/google-home-english-latest');
-      console.log('curl -X GET ' + url + '/podcast-data');
+      console.log('curl -X GET ' + url + '/google-home-podcast-latest');
+      console.log('curl -X GET ' + url + '/google-home-podcast-random');
+      console.log('curl -X GET ' + url + '/google-home-podcast-update');
+      console.log('curl -X GET ' + url + '/google-home-podcast-latest-by-type?target=xxx');
+      console.log('curl -X GET ' + url + '/google-home-podcast-random-by-type?target=xxx');
       console.log('POST example:');
       console.log('curl -X POST -d "text=Hello Google Home" ' + url + '/google-home-notifier');
 
