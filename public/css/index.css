@@ -117,7 +117,7 @@ html,body {
 }
 
 .row {
-  min-width: 400px;
+  min-width: 300px;
   display: flex;
   font-size: 12px;
   flex-direction: column;
