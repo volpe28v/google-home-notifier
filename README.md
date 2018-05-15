@@ -1,16 +1,39 @@
 # google-home-podcast
 Play rebuild.fm and backspace.fm on Google Home.
 
-<img width="939" alt="2018-01-06 0 42 44" src="https://user-images.githubusercontent.com/754962/34616170-b401d0fa-f27a-11e7-8ffd-fcdeb6e57e6e.png">
-
-
 ## Installation
 ```
 $ npm install
+```
+
+## Setting
+* edit 'podcast-list.json'
+
+## Run
+```
 $ GOOGLEHOME_IP=<GoogleHomeIP> node index.js
 ```
 
-## Progress page
+## API
+```
+http://localhost/google-home-notifier?text=Hello+Google+Home
+http://localhost/google-home-podcast-latest?target=xxx
+http://localhost/google-home-podcast-random?target=xxx
+http://localhost/google-home-podcast-update?target=xxx
+http://localhost/google-home-podcast-latest-by-type?target=xxx
+http://localhost/google-home-podcast-random-by-type?target=xxx
+```
+
+## Example
+```sh
+# play 'rebuild.fm' podcast latest
+$ curl -X GET http://localhost/google-home-podcast-latest?target=rebuild.fm
+
+# play type of 'tech' podcast random
+$ curl -X GET http://localhost/google-home-podcast-random-by-type?target=tech
+```
+
+## FrontEnd page
 access to http://localhost:8091/
 
 <img width="1213" alt="2018-02-01 0 54 29" src="https://user-images.githubusercontent.com/754962/35632648-8dda7a74-06ea-11e8-9859-8352371879ba.png">
