@@ -28,6 +28,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 var RssReader = require('./lib/rss-reader');
 var storage = require('./lib/jsonfile-storage');
 var jsonfile = require('jsonfile');
+var GomiReader = require('./lib/gomi-reader');
 
 var podcastJson= jsonfile.readFileSync('./podcast-list.json', {
   encoding: 'utf-8',
@@ -194,6 +195,14 @@ function init_app(){
     }
   });
   
+  app.get('/google-home-gomi', function (req, res) {
+    var gomi_reader = new GomiReader(process.env.GOMI_CITY, process.env.GOMI_AREA);
+    gomi_reader.get()
+    .then(function(result){
+      notifyToGoogleHome(result, ip, language, res);
+    });
+  });
+
   function notifyToGoogleHome(text, ip, language, res){
     googlehome.ip(ip, language);
     googlehome.device(deviceName,language)
