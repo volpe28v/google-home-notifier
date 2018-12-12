@@ -11,8 +11,14 @@ $ npm install
 
 ## Run
 ```
-$ GOOGLEHOME_IP=<GoogleHomeIP> node index.js
+$ GOOGLEHOME_IP=$GOOGLEHOME_IP AUDIO_IP=$AUDIO_IP GOMI_CITY=$GOMI_CITY GOMI_AREA=$GOMI_AREA node index.js
 ```
+
+* GOOGLEHOME_IP: Required
+* AUDIO_IP: Option see https://github.com/volpe28v/audio-server
+* GOMI_CITY: Option see http://www.53cal.jp/
+* GOMI_AREA: Option see http://www.53cal.jp/
+
 
 ## API
 ```
@@ -22,6 +28,8 @@ http://localhost/google-home-podcast-random?target=xxx
 http://localhost/google-home-podcast-update?target=xxx
 http://localhost/google-home-podcast-latest-by-type?target=xxx
 http://localhost/google-home-podcast-random-by-type?target=xxx
+http://localhost/google-home-audio?mp3=xxx
+http://localhost/google-home-gomi
 ```
 
 ## Example
