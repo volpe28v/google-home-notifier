@@ -23,7 +23,7 @@
     "cheerio-httpcli": "^0.7.3",
     "express": "^4.14.0",
     "google-spreadsheet": "^2.0.4",
-    "google-tts-api": "0.0.3",
+    "google-tts-api": "0.0.4",
     "jsonfile": "^4.0.0",
     "lodash": "^4.17.4",
     "mdns": "^2.3.3",
