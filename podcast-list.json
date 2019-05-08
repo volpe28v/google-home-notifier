@@ -10,6 +10,16 @@
     "type":  "tech"
   },
   {
+    "title": "Fukabori.fm",
+    "url":   "https://fukabori.fm/feed.xml",
+    "type":  "tech"
+  },
+  {
+    "title": "ajitofm",
+    "url":   "https://ajito.fm/index.xml",
+    "type":  "tech"
+  },
+  {
     "title": "omoiyari.fm",
     "url":   "http://feeds.lean-agile.fm/omoiyarifm",
     "type":  "tech"
