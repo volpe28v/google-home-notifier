@@ -1,12 +1,7 @@
 var axios = require("axios");
 var _ = require('lodash');
 var moment = require('moment');
-
-var socket = require('socket.io-client')('/', {});
-
-socket.on('connect', function() {
-  console.log("connected socket.io");
-});
+var io = require('socket.io-client');
 
 var router = new VueRouter({
   mode: 'history',
@@ -29,13 +24,15 @@ new Vue({
         duration: 0,
       },
       podcastList: [],
+      socket: null,
     }
   },
 
   mounted: function(){
     var self = this;
+    self.socket = io();
 
-    socket.on("data", function(data){
+    self.socket.on("data", function(data){
       self.podcastList = data;
       self.podcastList.forEach(function(podcast){
         podcast.abstract = self.getAbstract(podcast.items);
@@ -44,7 +41,7 @@ new Vue({
       self.loading = false;
     });
 
-    socket.on("progress", function(data){
+    self.socket.on("progress", function(data){
       self.podcastList.forEach(function(podcast){
         var found_item = podcast.items.filter(function(item){
           return item.url === data.url;
