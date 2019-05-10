@@ -251,6 +251,7 @@ function init_app(){
     server.listen(serverPort, function (err) {
       if (err) console.log(err);
       var url = "http://localhost";
+      console.log('server listen ' + url + ':' + serverPort)
 
       console.log('Endpoints:');
       console.log('    ' + url + '/google-home-notifier');
